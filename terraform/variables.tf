@@ -8,8 +8,8 @@ variable "region" {
   type        = string
 }
 
-variable "rg_name" {
-  description = "Nombre del grupo de recursos"
+variable "rg_id" {
+  description = "ID del grupo de recursos"
   type        = string
 }
 
