@@ -12,7 +12,7 @@ provider "ibm" {
   region           = var.region
 }
 
-data "ibm_is_vpc" "vpc" {
+resource "ibm_is_vpc" "vpc" {
   name = var.vpc_name
   resource_group = var.rg_id
 }
