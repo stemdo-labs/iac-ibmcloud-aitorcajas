@@ -12,3 +12,8 @@ variable "rg_name" {
   description = "Nombre del grupo de recursos"
   type        = string
 }
+
+variable "vpc_name" {
+  description = "Nombre de la vpc"
+  type = string
+}
