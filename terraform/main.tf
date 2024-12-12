@@ -14,5 +14,5 @@ provider "ibm" {
 
 data "ibm_is_vpc" "vpc" {
   name = var.vpc_name
-  resource_group = var.rg_name
+  resource_group = var.rg_id
 }
