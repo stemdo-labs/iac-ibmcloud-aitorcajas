@@ -15,5 +15,10 @@ variable "rg_id" {
 
 variable "vpc_name" {
   description = "Nombre de la vpc"
-  type = string
+  type        = string
+}
+
+variable "subnet_name" {
+  description = "Nombre de la subnet"
+  type        = string
 }
