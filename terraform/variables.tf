@@ -1,11 +1,14 @@
 variable "ibmcloud_api_key" {
-  type = string
+  description = "API de IBM"
+  type        = string
 }
 
 variable "region" {
-  type = string
+  description = "Región"
+  type        = string
 }
 
 variable "rg_name" {
-  type = string
+  description = "Nombre del grupo de recursos"
+  type        = string
 }
