@@ -32,8 +32,8 @@ resource "ibm_security_group" "sg_vm" {
 resource "ibm_security_group_rule" "allow_port_22" {
     direction = "inbound"
     protocol  = "tcp"
-    port_min  = 22
-    port_max  = 22
+    port_range_min  = 22
+    port_range_max  = 22
     remote_ip = "0.0.0.0/0"
     security_group_id = ibm_security_group.sg_vm.id
 }
