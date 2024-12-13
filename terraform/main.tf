@@ -51,7 +51,8 @@ resource "ibm_is_instance" "vm_bd" {
   name                     = "vm-acajas-bd"
   metadata_service_enabled = false
   profile                  = "bx2-1x4"
-  image                    = "ibm-ubuntu-20-04-3-minimal-amd64-2"
+  zone                     = var.region
+  vpc                      = ibm_is_vpc.vpc_vm.id
 
   primary_network_attachment {
     name = "primary-att"
