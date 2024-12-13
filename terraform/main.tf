@@ -48,3 +48,16 @@ resource "ibm_is_floating_ip" "public_ip_vm" {
   resource_group = var.rg_id
   target = ibm_is_instance.vm_bd.primary_network_interface.0.id
 }
+
+resource "ibm_is_security_group" "sg_vm" {
+  name              = "sg-vm-bd"
+  vpc               = ibm_is_vpc.vpc_vm.id
+
+  rule {
+    direction = "inbound"
+    protocol  = "tcp"
+    port_min  = 22
+    port_max  = 22
+    remote_ip = "0.0.0.0/0"
+  }
+}
