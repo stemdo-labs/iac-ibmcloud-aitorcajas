@@ -50,6 +50,6 @@ resource "ibm_is_instance" "vm_bd" {
 
 resource "ibm_is_floating_ip" "public_ip_vm" {
   name = "pip-vm-bd-acajas"
-  resource_goup = var.rg_id
+  resource_group = var.rg_id
   target = ibm_is_instance.vm_bd.primary_network_interface.0.id
 }
