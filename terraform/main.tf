@@ -30,23 +30,6 @@ resource "ibm_is_subnet" "subnet_vm" {
   routing_table   = ibm_is_vpc_routing_table.routing_table_vm.routing_table
 }
 
-resource "ibm_is_floating_ip" "public_ip_vm" {
-  name = "pip-vm-bd-acajas"
-  zone = var.region
-}
-
-# resource "ibm_is_virtual_network_interface" "vni_vm_bd" {
-#   name                      = "vni-bd-vm-acajas"
-#   allow_ip_spoofing         = false
-#   enable_infrastructure_nat = true
-
-#   primary_ip {
-#     auto_delete = false
-#     address     = "10.0.1.4"
-#   }
-#   subnet = ibm_is_subnet.subnet_vm.id
-# }
-
 resource "ibm_is_instance" "vm_bd" {
   name           = "vm-bd-acajas"
   image          = "r006-21d636c2-eacf-4c31-9cc8-c7335966f4e3"
@@ -63,4 +46,10 @@ resource "ibm_is_instance" "vm_bd" {
       address     = "10.0.1.4"
     }
   }
+}
+
+resource "ibm_is_floating_ip" "public_ip_vm" {
+  name = "pip-vm-bd-acajas"
+  resource_goup = var.rg_id
+  target = ibm_is_instance.vm_bd.primary_network_interface.0.id
 }
