@@ -12,13 +12,3 @@ variable "rg_id" {
   description = "ID del grupo de recursos"
   type        = string
 }
-
-variable "vpc_name" {
-  description = "Nombre de la vpc"
-  type        = string
-}
-
-variable "subnet_name" {
-  description = "Nombre de la subnet"
-  type        = string
-}
