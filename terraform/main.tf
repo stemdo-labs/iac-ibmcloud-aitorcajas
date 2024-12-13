@@ -35,34 +35,32 @@ resource "ibm_is_floating_ip" "public_ip_vm" {
   zone = var.region
 }
 
-resource "ibm_is_virtual_network_interface" "vni_vm_bd" {
-  name                      = "vni-bd-vm-acajas"
-  allow_ip_spoofing         = false
-  enable_infrastructure_nat = true
+# resource "ibm_is_virtual_network_interface" "vni_vm_bd" {
+#   name                      = "vni-bd-vm-acajas"
+#   allow_ip_spoofing         = false
+#   enable_infrastructure_nat = true
 
-  primary_ip {
-    auto_delete = false
-    address     = "10.0.1.4"
-  }
-  subnet = ibm_is_subnet.subnet_vm.id
-}
+#   primary_ip {
+#     auto_delete = false
+#     address     = "10.0.1.4"
+#   }
+#   subnet = ibm_is_subnet.subnet_vm.id
+# }
 
 resource "ibm_is_instance" "vm_bd" {
-  name                     = "vm-acajas-bd"
-  metadata_service_enabled = false
-  profile                  = "bx2-1x4"
-  zone                     = var.region
-  vpc                      = ibm_is_vpc.vpc_vm.id
+  name           = "vm-bd-acajas"
+  image          = "r006-21d636c2-eacf-4c31-9cc8-c7335966f4e3"
+  profile        = "bx2-1x4"
+  vpc            = ibm_is_vpc.vpc_vm.id
+  zone           = var.region
+  resource_group = var.rg_id
 
-  primary_network_attachment {
-    name = "primary-att"
-    virtual_network_interface {
-      id = ibm_is_virtual_network_interface.vni_vm_bd.id
+  primary_network_interface {
+    subnet            = ibm_is_subnet.subnet_vm.id
+    allow_ip_spoofing = true
+    primary_ip {
+      auto_delete = false
+      address     = "10.0.1.4"
     }
-  }
-
-  boot_volume {
-    name    = "volume-vm-bd-acajas"
-    profile = "general-purpose"
   }
 }
