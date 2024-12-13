@@ -27,7 +27,7 @@ resource "ibm_is_subnet" "subnet_vm" {
 
 resource "ibm_is_instance" "vm_bd" {
   name           = "vm-bd-acajas"
-  image          = "r006-21d636c2-eacf-4c31-9cc8-c7335966f4e3"
+  image          = "r018-941eb02e-ceb9-44c8-895b-b31d241f43b5"
   profile        = "bx2-1x4"
   vpc            = ibm_is_vpc.vpc_vm.id
   zone           = var.zone
