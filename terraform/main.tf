@@ -38,7 +38,7 @@ resource "ibm_is_instance" "vm_bd" {
     allow_ip_spoofing = true
     primary_ip {
       auto_delete = false
-      address     = "10.0.1.4"
+      address     = "10.242.0.4"
     }
   }
 }
