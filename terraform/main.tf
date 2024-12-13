@@ -44,7 +44,7 @@ resource "ibm_is_virtual_network_interface" "vni_vm_bd" {
     auto_delete = false
     address     = "10.0.1.4"
   }
-  subnet = ibm_is_subnet.subnet.id
+  subnet = ibm_is_subnet.subnet_vm.id
 }
 
 resource "ibm_is_instance" "vm_bd" {
