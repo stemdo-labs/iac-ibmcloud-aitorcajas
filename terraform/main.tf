@@ -25,17 +25,22 @@ resource "ibm_is_subnet" "subnet_vm" {
   ipv4_cidr_block = "10.242.0.0/24"
 }
 
-resource "ibm_security_group" "sg_vm" {
-  name        = "sg-vm-acajas"
+resource "ibm_is_security_group" "sg_vm" {
+  name           = "sg-vm-acajas"
+  vpc            = ibm_is_vpc.vpc_vm.id
+  resource_group = var.rg_id
 }
 
-resource "ibm_security_group_rule" "allow_port_22" {
-    direction = "ingress"
-    protocol  = "tcp"
-    port_range_min  = 22
-    port_range_max  = 22
-    remote_ip = "0.0.0.0/0"
-    security_group_id = ibm_security_group.sg_vm.id
+resource "ibm_is_security_group_rule" "allow_port_22" {
+  direction  = "inbound"
+  remote     = "0.0.0.0/0"
+  ip_version = "ipv4"
+  group      = ibm_is_security_group.sg_vm.id
+
+  tcp {
+    port_min = 22
+    port_max = 22
+  }
 }
 
 resource "ibm_is_instance" "vm_bd" {
@@ -49,7 +54,7 @@ resource "ibm_is_instance" "vm_bd" {
   primary_network_interface {
     subnet            = ibm_is_subnet.subnet_vm.id
     allow_ip_spoofing = true
-    security_groups   = [ibm_security_group.sg_vm.id]
+    security_groups   = [ibm_is_security_group.sg_vm.id]
     primary_ip {
       auto_delete = false
       address     = "10.242.0.4"
