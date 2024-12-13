@@ -44,13 +44,16 @@ resource "ibm_is_instance" "vm" {
   
   primary_network_interface {
     subnet          = ibm_is_subnet.subnet.id
-    floating_ip     = ibm_is_floating_ip.public_ip.id
     security_groups = []
   }
 
   boot_volume {
     name = "volume-vm-bd-acajas"
     profile = "general-purpose"
-    capacity = 20
   }
+}
+
+resource "ibm_is_floating_ip_attachment" "public_ip_attachment" {
+  instance_id    = ibm_is_instance.vm.id
+  floating_ip_id = ibm_is_floating_ip.public_ip.id
 }
