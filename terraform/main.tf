@@ -17,19 +17,12 @@ resource "ibm_is_vpc" "vpc_vm" {
   resource_group = var.rg_id
 }
 
-resource "ibm_is_vpc_routing_table" "routing_table_vm" {
-  name = "routing-table-vm-acajas"
-  vpc  = ibm_is_vpc.vpc_vm.id
-  resource_group = var.rg_id
-}
-
 resource "ibm_is_subnet" "subnet_vm" {
   name            = "subnet-vm-acajas"
   vpc             = ibm_is_vpc.vpc_vm.id
   resource_group = var.rg_id
   zone            = var.region
   ipv4_cidr_block = "10.0.1.0/24"
-  routing_table   = ibm_is_vpc_routing_table.routing_table_vm.routing_table
 }
 
 resource "ibm_is_instance" "vm_bd" {
