@@ -26,6 +26,7 @@ resource "ibm_is_subnet" "subnet_vm" {
 }
 
 resource "ibm_is_security_group" "sg_vm" {
+  vpc = ibm_is_vpc.vpc_vm.id
   direction = "inbound"
   protocol  = "tcp"
   port_min  = 22
