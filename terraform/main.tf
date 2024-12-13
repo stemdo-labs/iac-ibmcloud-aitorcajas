@@ -21,7 +21,7 @@ resource "ibm_is_subnet" "subnet_vm" {
   name            = "subnet-vm-acajas"
   vpc             = ibm_is_vpc.vpc_vm.id
   resource_group = var.rg_id
-  zone            = var.region
+  zone            = var.zone
   ipv4_cidr_block = "10.0.1.0/24"
 }
 
@@ -30,7 +30,7 @@ resource "ibm_is_instance" "vm_bd" {
   image          = "r006-21d636c2-eacf-4c31-9cc8-c7335966f4e3"
   profile        = "bx2-1x4"
   vpc            = ibm_is_vpc.vpc_vm.id
-  zone           = var.region
+  zone           = var.zone
   resource_group = var.rg_id
 
   primary_network_interface {

@@ -12,3 +12,7 @@ variable "rg_id" {
   description = "ID del grupo de recursos"
   type        = string
 }
+
+variable "zone" {
+  description = "Zona"
+}
