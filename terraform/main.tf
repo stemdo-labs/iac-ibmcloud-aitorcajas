@@ -38,15 +38,6 @@ resource "ibm_security_group_rule" "allow_port_22" {
     security_group_id = ibm_security_group.allow_port_22.id
 }
 
-resource "ibm_is_security_group" "sg_vm" {
-  vpc       = ibm_is_vpc.vpc_vm.id
-  direction = "inbound"
-  protocol  = "tcp"
-  port_min  = 22
-  port_max  = 22
-  remote_ip = "0.0.0.0/0"
-}
-
 resource "ibm_is_instance" "vm_bd" {
   name           = "vm-bd-acajas"
   image          = "r018-941eb02e-ceb9-44c8-895b-b31d241f43b5"
