@@ -49,7 +49,7 @@ resource "ibm_is_instance" "vm_bd" {
   primary_network_interface {
     subnet            = ibm_is_subnet.subnet_vm.id
     allow_ip_spoofing = true
-    security_groups   = [ibm_is_security_group.sg_vm.id]
+    security_groups   = [ibm_security_group.sg_vm.id]
     primary_ip {
       auto_delete = false
       address     = "10.242.0.4"
