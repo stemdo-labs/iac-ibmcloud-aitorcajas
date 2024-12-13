@@ -22,7 +22,7 @@ resource "ibm_is_subnet" "subnet_vm" {
   vpc             = ibm_is_vpc.vpc_vm.id
   resource_group = var.rg_id
   zone            = var.zone
-  ipv4_cidr_block = "10.0.1.0/24"
+  ipv4_cidr_block = "10.242.0.0/24"
 }
 
 resource "ibm_is_instance" "vm_bd" {
