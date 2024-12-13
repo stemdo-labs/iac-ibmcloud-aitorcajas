@@ -12,48 +12,56 @@ provider "ibm" {
   region           = var.region
 }
 
-resource "ibm_is_vpc" "vpc" {
+resource "ibm_is_vpc" "vpc_vm" {
   name           = "vpc-vm-acajas"
   resource_group = var.rg_id
 }
 
-resource "ibm_is_vpc_routing_table" "routing_table" {
+resource "ibm_is_vpc_routing_table" "routing_table_vm" {
   name = "routing-table-vm-acajas"
-  vpc  = ibm_is_vpc.vpc.id
+  vpc  = ibm_is_vpc.vpc_vm.id
 }
 
-resource "ibm_is_subnet" "subnet" {
+resource "ibm_is_subnet" "subnet_vm" {
   name            = "subnet-vm-acajas"
-  vpc             = ibm_is_vpc.vpc.id
+  vpc             = ibm_is_vpc.vpc_vm.id
   zone            = var.region
   ipv4_cidr_block = "10.0.1.0/24"
-  routing_table   = ibm_is_vpc_routing_table.routing_table.routing_table
+  routing_table   = ibm_is_vpc_routing_table.routing_table_vm.routing_table
 }
 
-resource "ibm_is_floating_ip" "public_ip" {
+resource "ibm_is_floating_ip" "public_ip_vm" {
   name = "pip-vm-bd-acajas"
   zone = var.region
 }
 
-resource "ibm_is_instance" "vm" {
+resource "ibm_is_virtual_network_interface" "vni_vm_bd" {
+  name                      = "vni-bd-vm-acajas"
+  allow_ip_spoofing         = false
+  enable_infrastructure_nat = true
+
+  primary_ip {
+    auto_delete = false
+    address     = "10.0.1.4"
+  }
+  subnet = ibm_is_subnet.subnet.id
+}
+
+resource "ibm_is_instance" "vm_bd" {
   name    = "vm-acajas-bd"
-  vpc     = ibm_is_vpc.vpc.id
   zone    = var.region
   profile = "bx2-1x4"
   image   = "ibm-ubuntu-20-04-3-minimal-amd64-2"
-  
-  primary_network_interface {
-    subnet          = ibm_is_subnet.subnet.id
-    security_groups = []
+
+  primary_network_attachment {
+    name = "primary-att"
+    virtual_network_interface {
+      id = ibm_is_virtual_network_interface.vni_vm_bd.id
+    }
   }
 
   boot_volume {
-    name = "volume-vm-bd-acajas"
+    name    = "volume-vm-bd-acajas"
     profile = "general-purpose"
   }
-}
-
-resource "ibm_is_floating_ip_attachment" "public_ip_attachment" {
-  instance_id    = ibm_is_instance.vm.id
-  floating_ip_id = ibm_is_floating_ip.public_ip.id
 }
