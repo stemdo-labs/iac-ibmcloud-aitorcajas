@@ -36,7 +36,6 @@ resource "ibm_is_security_group_rule" "allow_port_22" {
   remote     = "0.0.0.0/0"
   ip_version = "ipv4"
   group      = ibm_is_security_group.sg_vm.id
-  resource_group = var.rg_id
 }
 
 resource "ibm_is_public_gateway" "public_gateway" {
