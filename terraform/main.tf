@@ -32,7 +32,7 @@ resource "ibm_is_security_group" "sg_vm" {
 }
 
 resource "ibm_is_security_group_rule" "allow_port_22" {
-  direction  = "outbound"
+  direction  = "inbound"
   remote     = "0.0.0.0/0"
   ip_version = "ipv4"
   group      = ibm_is_security_group.sg_vm.id
