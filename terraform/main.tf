@@ -41,7 +41,7 @@ resource "ibm_is_security_group_rule" "allow_port_22" {
 resource "ibm_is_public_gateway" "public_gateway" {
   name = "acajas-vpc-vm-gateway"
   vpc  = ibm_is_vpc.vpc_vm.id
-  zone = "us-south-1"
+  zone = var.zone
   resource_group = var.rg_id
 }
 
