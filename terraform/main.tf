@@ -105,7 +105,7 @@ resource "ibm_resource_instance" "cos_instance" {
   name     = "acajas-cos-instance"
   service  = "cloud-object-storage"
   plan     = "lite"
-  location = var.region
+  location = "global"
   resource_group_id = var.rg_id
 }
 
