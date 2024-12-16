@@ -16,3 +16,7 @@ variable "rg_id" {
 variable "zone" {
   description = "Zona"
 }
+
+variable "ssh_key" {
+  description = "Clave ssh pública"
+}

@@ -60,6 +60,8 @@ resource "ibm_is_instance" "vm_bd" {
       address     = "10.242.0.4"
     }
   }
+
+  keys = [ var.ssh_key ]
 }
 
 resource "ibm_is_floating_ip" "public_ip_vm" {
