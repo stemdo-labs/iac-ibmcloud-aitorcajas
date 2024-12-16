@@ -104,6 +104,7 @@ resource "ibm_is_subnet" "subnet_cluster" {
 resource "ibm_container_cluster" "cluster" {
   name              = "cluster-acajas"
   datacenter        = "lon02"
+  hardware          = "vpc"
   machine_type      = "u2c.2x4"
   subnet_id         = [ibm_is_subnet.subnet_cluster.id]
   default_pool_size = 1
