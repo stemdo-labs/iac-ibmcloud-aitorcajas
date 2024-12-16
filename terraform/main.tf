@@ -87,3 +87,24 @@ resource "ibm_is_floating_ip" "public_ip_vm" {
   resource_group = var.rg_id
   target         = ibm_is_instance.vm_bd.primary_network_interface.0.id
 }
+
+resource "ibm_is_vpc" "vpc_cluster" {
+  name           = "vpc-cluster-acajas"
+  resource_group = var.rg_id
+}
+
+resource "ibm_is_subnet" "subnet_cluster" {
+  name            = "subnet-cluster-acajas"
+  vpc             = ibm_is_vpc.vpc_cluster.id
+  resource_group  = var.rg_id
+  zone            = var.zone
+  ipv4_cidr_block = "10.242.0.0/24"
+}
+
+resource "ibm_container_cluster" "cluster" {
+  name            = "cluster-acajas"
+  machine_type    = "u2c.2x4"
+  subnet_id       = [ ibm_is_subnet.subnet_cluster.id ]
+  default_pool_size = 1
+  resource_group_id = var.rg_id
+}
