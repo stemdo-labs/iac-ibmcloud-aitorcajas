@@ -106,6 +106,7 @@ resource "ibm_resource_instance" "cos_instance" {
   service  = "cloud-object-storage"
   plan     = "lite"
   location = var.region
+  resource_group_id = var.rg_id
 }
 
 resource "ibm_container_vpc_cluster" "cluster" {
