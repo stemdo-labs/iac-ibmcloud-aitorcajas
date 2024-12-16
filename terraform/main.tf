@@ -32,15 +32,18 @@ resource "ibm_is_security_group" "sg_vm" {
 }
 
 resource "ibm_is_security_group_rule" "allow_port_22" {
-  direction  = "inbound"
+  direction  = "outbound"
   remote     = "0.0.0.0/0"
   ip_version = "ipv4"
   group      = ibm_is_security_group.sg_vm.id
+  resource_group = var.rg_id
+}
 
-  tcp {
-    port_min = 22
-    port_max = 22
-  }
+resource "ibm_is_public_gateway" "public_gateway" {
+  name = "acajas-vpc-vm-gateway"
+  vpc  = ibm_is_vpc.vpc_vm.id
+  zone = "us-south-1"
+  resource_group = var.rg_id
 }
 
 resource "ibm_is_ssh_key" "ssh_key_vm" {
