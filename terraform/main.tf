@@ -31,11 +31,21 @@ resource "ibm_is_security_group" "sg_vm" {
   resource_group = var.rg_id
 }
 
-resource "ibm_is_security_group_rule" "allow_port_22" {
+resource "ibm_is_security_group_rule" "internet" {
+  direction  = "outbound"
+  remote     = "0.0.0.0/0"
+  group      = ibm_is_security_group.sg_vm.id
+}
+
+resource "ibm_is_security_group_rule" "ssh" {
   direction  = "inbound"
   remote     = "0.0.0.0/0"
-  ip_version = "ipv4"
   group      = ibm_is_security_group.sg_vm.id
+
+  tcp {
+    port_min = 22
+    port_max = 22
+  }
 }
 
 resource "ibm_is_public_gateway" "public_gateway" {
