@@ -104,8 +104,8 @@ resource "ibm_is_subnet" "subnet_cluster" {
 resource "ibm_resource_instance" "cos_instance" {
   name     = "acajas-cos-instance"
   service  = "cloud-object-storage"
-  plan     = "standard"
-  location = var.region
+  plan     = "lite"
+  location = "global"
   resource_group_id = var.rg_id
 }
 
