@@ -1,31 +1,3 @@
-terraform {
-  required_version = ">=1.0.0, <2.0"
-  required_providers {
-    ibm = {
-      source = "IBM-Cloud/ibm"
-    }
-  }
-}
-
-provider "ibm" {
-  ibmcloud_api_key = var.ibmcloud_api_key
-  region           = var.region
-}
-
-# module "vm" {
-#   source = "./modules/vm"
-#   rg_id  = var.rg_id
-#   zone   = var.zone
-#   region = var.region
-# }
-
-# module "cluster" {
-#   source = "./modules/cluster"
-#   rg_id  = var.rg_id
-#   zone   = var.zone
-#   region = var.region
-# }
-
 resource "ibm_is_vpc" "vpc_vm" {
   name           = "vpc-vm-acajas"
   resource_group = var.rg_id
@@ -100,44 +72,4 @@ resource "ibm_is_floating_ip" "public_ip_vm" {
   name           = "pip-vm-bd-acajas"
   resource_group = var.rg_id
   target         = ibm_is_instance.vm_bd.primary_network_interface.0.id
-}
-
-resource "ibm_is_vpc" "vpc_cluster" {
-  name           = "vpc-cluster-acajas"
-  resource_group = var.rg_id
-}
-
-resource "ibm_is_subnet" "subnet_cluster" {
-  name            = "subnet-cluster-acajas"
-  vpc             = ibm_is_vpc.vpc_cluster.id
-  resource_group  = var.rg_id
-  zone            = var.zone
-  ipv4_cidr_block = "10.242.0.0/24"
-}
-
-resource "ibm_resource_instance" "cos_instance" {
-  name              = "acajas-cos-instance"
-  service           = "cloud-object-storage"
-  plan              = "standard"
-  location          = "global"
-  resource_group_id = var.rg_id
-}
-
-resource "ibm_container_vpc_cluster" "cluster" {
-  name              = "acajas-vpc-cluster"
-  vpc_id            = ibm_is_vpc.vpc_cluster.id
-  kube_version      = "4.16.23_openshift"
-  flavor            = "bx2.4x16"
-  worker_count      = "2"
-  cos_instance_crn  = ibm_resource_instance.cos_instance.id
-  resource_group_id = var.rg_id
-  zones {
-    subnet_id = ibm_is_subnet.subnet_cluster.id
-    name      = var.zone
-  }
-}
-
-resource "ibm_cr_namespace" "cr_namespace" {
-  name              = "acajas-cr-namespace"
-  resource_group_id = var.rg_id
 }
