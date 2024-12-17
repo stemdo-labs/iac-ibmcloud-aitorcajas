@@ -128,7 +128,7 @@ resource "ibm_container_vpc_cluster" "cluster" {
   vpc_id            = ibm_is_vpc.vpc_cluster.id
   kube_version      = "4.16.23_openshift"
   flavor            = "bx2.4x16"
-  worker_count      = "1"
+  worker_count      = "2"
   cos_instance_crn  = ibm_resource_instance.cos_instance.id
   resource_group_id = var.rg_id
   zones {
