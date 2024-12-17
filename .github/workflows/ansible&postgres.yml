@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - run: whoami
+      # - run: whoami
 
       # - name: Instalar az CLI
       #   run: |
@@ -18,7 +18,7 @@ jobs:
       - name: Instalar Ansible
         run: |
           sudo apt-get update
-          sudo install -y ansible
+          sudo apt-get install -y ansible
 
       - name: Verify Ansible Installation
         run: ansible --version
