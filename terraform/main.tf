@@ -19,12 +19,12 @@ module "vm" {
   region = var.region
 }
 
-module "cluster" {
-  source = "./modules/cluster"
-  rg_id  = var.rg_id
-  zone   = var.zone
-  region = var.region
-}
+# module "cluster" {
+#   source = "./modules/cluster"
+#   rg_id  = var.rg_id
+#   zone   = var.zone
+#   region = var.region
+# }
 
 resource "ibm_cr_namespace" "cr_namespace" {
   name              = "acajas-cr-namespace"
