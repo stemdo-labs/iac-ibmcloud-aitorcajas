@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "ibm" {
-  # ibmcloud_api_key = var.ibmcloud_api_key
+  ibmcloud_api_key = var.ibmcloud_api_key
   region           = var.region
 }
 
@@ -115,13 +115,13 @@ resource "ibm_is_subnet" "subnet_cluster" {
   ipv4_cidr_block = "10.242.0.0/24"
 }
 
-resource "ibm_resource_instance" "cos_instance" {
-  name              = "acajas-cos-instance"
-  service           = "cloud-object-storage"
-  plan              = "standard"
-  location          = "global"
-  resource_group_id = var.rg_id
-}
+# resource "ibm_resource_instance" "cos_instance" {
+#   name              = "acajas-cos-instance"
+#   service           = "cloud-object-storage"
+#   plan              = "standard"
+#   location          = "global"
+#   resource_group_id = var.rg_id
+# }
 
 resource "ibm_container_vpc_cluster" "cluster" {
   name              = "acajas-vpc-cluster"
@@ -129,7 +129,7 @@ resource "ibm_container_vpc_cluster" "cluster" {
   kube_version      = "4.16.23_openshift"
   flavor            = "bx2.4x16"
   worker_count      = "1"
-  cos_instance_crn  = ibm_resource_instance.cos_instance.id
+  # cos_instance_crn  = ibm_resource_instance.cos_instance.id
   resource_group_id = var.rg_id
   zones {
     subnet_id = ibm_is_subnet.subnet_cluster.id
