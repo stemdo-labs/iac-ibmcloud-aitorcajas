@@ -141,3 +141,22 @@ resource "ibm_cr_namespace" "cr_namespace" {
   name              = "acajas-cr-namespace"
   resource_group_id = var.rg_id
 }
+
+resource "ibm_is_security_group" "sg_cluster" {
+  name           = "sg-cluster-acajas"
+  vpc            = ibm_is_vpc.vpc_cluster.id
+  resource_group = var.rg_id
+}
+
+resource "ibm_is_security_group_rule" "internet_cluster" {
+  direction = "outbound"
+  remote    = "0.0.0.0/0"
+  group     = ibm_is_security_group.sg_cluster.id
+}
+
+resource "ibm_is_public_gateway" "public_gateway_cluster" {
+  name           = "acajas-vpc-cluster-gateway"
+  vpc            = ibm_is_vpc.vpc_cluster.id
+  zone           = var.zone
+  resource_group = var.rg_id
+}
