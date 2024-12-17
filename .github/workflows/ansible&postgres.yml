@@ -35,5 +35,5 @@ jobs:
 
       - name: Ejecutar playbook para instalar PostgreSQL
         run:  |
-          ansible-playbook postgresql.yml --vault-password-file vault_password.txt
+          ansible-playbook -i inventory.ini postgresql.yml --vault-password-file vault_password.txt
         working-directory: ansible
