@@ -9,9 +9,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Instalar az CLI
-        run: |
-          curl -sL https://aka.ms/InstallAzureCLIDeb| sudo bash
+      # - name: Instalar az CLI
+      #   run: |
+      #     curl -sL https://aka.ms/InstallAzureCLIDeb| sudo bash
       
       - name: Instalar Ansible
         run: |
