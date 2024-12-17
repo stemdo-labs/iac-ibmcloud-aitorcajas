@@ -15,8 +15,8 @@ jobs:
       
       - name: Instalar Ansible
         run: |
-          sudo -u acajasbd apt-get update
-          sudo -u acajasbd install -y ansible
+          sudo -u root apt-get update
+          sudo -u root install -y ansible
 
       - name: Verify Ansible Installation
         run: ansible --version
