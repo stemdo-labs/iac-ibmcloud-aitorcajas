@@ -113,6 +113,7 @@ resource "ibm_is_subnet" "subnet_cluster" {
   resource_group  = var.rg_id
   zone            = var.zone
   ipv4_cidr_block = "10.242.0.0/24"
+  public_gateway = ibm_is_public_gateway.public_gateway_cluster.id
 }
 
 resource "ibm_resource_instance" "cos_instance" {
