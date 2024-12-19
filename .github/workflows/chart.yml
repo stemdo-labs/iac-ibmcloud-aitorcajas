@@ -52,7 +52,9 @@ jobs:
         run: oc login --server=${{ secrets.IBM_SERVER_LOGIN }} --token=${{ secrets.IBM_LOGIN_TOKEN }}
 
       - name: IBM Cloud Login
-        run: ibmcloud login --apikey ${{ secrets.APIKEY_IBM }}
+        run: |
+          ibmcloud login --apikey ${{ secrets.APIKEY_IBM }} -r eu-gb
+          ibmcloud target -g Stemdo_Sandbox
 
       - name: Instalar plugin CR
         run: ibmcloud plugin install container-registry
