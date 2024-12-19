@@ -48,14 +48,22 @@ jobs:
         run: |
           curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
 
+      # - name: IBM Cloud Login server
+      #   run: oc login --server=${{ secrets.IBM_SERVER_LOGIN }} --token=${{ secrets.IBM_LOGIN_TOKEN }}
+
       - name: IBM Cloud Login
-        run: oc login --token={{ secrets.IBM_LOGIN_TOKEN }} -r eu-gb
+        run: |
+          ibmcloud login --apikey ${{ secrets.APIKEY_IBM }} -r eu-gb
+          ibmcloud target -g Stemdo_Sandbox
+
+      - name: Instalar plugin CR
+        run: ibmcloud plugin install container-registry
 
       - name: Login to IBM Container Registry
-        run: ibmcloud cr login -r eu.icr.io/acajas-cr-namespace
+        run: ibmcloud cr login --client docker
 
       - name: Push de los charts
         run: |
-          helm push backend-${{steps.back_version.outputs.back_version}}.tgz oci://eu.icr.io/acajas-cr-namespace/acajas
-          helm push frontend-${{steps.front_version.outputs.front_version}}.tgz oci://eu.icr.io/acajas-cr-namespace/acajas
+          helm push backend-${{steps.back_version.outputs.back_version}}.tgz oci://uk.icr.io/acajas-cr-namespace/acajas
+          helm push frontend-${{steps.front_version.outputs.front_version}}.tgz oci://uk.icr.io/acajas-cr-namespace/acajas
         working-directory: charts
