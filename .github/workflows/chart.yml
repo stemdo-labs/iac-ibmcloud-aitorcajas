@@ -49,7 +49,7 @@ jobs:
           curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
 
       - name: IBM Cloud Login
-        run: oc login --token={{ secrets.IBM_LOGIN_TOKEN }}
+        run: oc login --token={{ secrets.IBM_LOGIN_TOKEN }} --server={{ secrets.IBM_SERVER_LOGIN }}
 
       - name: Login to IBM Container Registry
         run: ibmcloud cr login -r eu.icr.io/acajas-cr-namespace
