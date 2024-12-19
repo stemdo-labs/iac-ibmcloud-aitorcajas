@@ -48,8 +48,8 @@ jobs:
         run: |
           curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
 
-      - name: IBM Cloud Login server
-        run: oc login --server=${{ secrets.IBM_SERVER_LOGIN }} --token=${{ secrets.IBM_LOGIN_TOKEN }}
+      # - name: IBM Cloud Login server
+      #   run: oc login --server=${{ secrets.IBM_SERVER_LOGIN }} --token=${{ secrets.IBM_LOGIN_TOKEN }}
 
       - name: IBM Cloud Login
         run: |
