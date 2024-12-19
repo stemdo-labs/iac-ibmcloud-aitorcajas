@@ -1,0 +1,1 @@
+Se ha instalado correctamente el frontend de la aplicación.

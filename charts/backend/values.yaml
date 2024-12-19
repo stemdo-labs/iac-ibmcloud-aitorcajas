@@ -1,0 +1,17 @@
+# Nombre del namespace donde se desplegará
+namespace: default
+
+# Número de replicas
+replicas: 1
+
+# Imagen
+image: acajascr.azurecr.io/backend:1.0.0-SNAPSHOT
+
+# Recursos
+recursos:
+  limites:
+    memoria: "750Mi"
+    cpu: "600m"
+  requests:
+    memoria: "500Mi"
+    cpu: "200m"
