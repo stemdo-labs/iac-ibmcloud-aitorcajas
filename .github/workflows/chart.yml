@@ -51,8 +51,11 @@ jobs:
       - name: IBM Cloud Login
         run: oc login --server=${{ secrets.IBM_SERVER_LOGIN }} --token=${{ secrets.IBM_LOGIN_TOKEN }}
 
+      - name: Instalar plugin CR
+        run: ibmcloud plugin install container-registry
+
       - name: Login to IBM Container Registry
-        run: ibmcloud cr login -r eu.icr.io/acajas-cr-namespace
+        run: ibmcloud cr login --client docker
 
       - name: Push de los charts
         run: |
