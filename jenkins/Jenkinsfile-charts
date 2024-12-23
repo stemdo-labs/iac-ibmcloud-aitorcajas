@@ -1,5 +1,7 @@
 pipeline {
-    agent any // Usar cualquier agente disponible (puedes configurarlo según tu entorno)
+    agent {
+        docker { image 'ubuntu:latest' }
+    }
     environment {
         APIKEY_IBM_ACAJAS = credentials('APIKEY_IBM_ACAJAS') // Asegúrate de configurar este secreto en Jenkins
     }
@@ -20,16 +22,7 @@ pipeline {
         stage('Instalar Docker') {
             steps {
                 script {
-                    echo "Instalando Docker..."
-                    sh '''
-                        apt-get update
-                        apt-get install -y apt-transport-https ca-certificates curl software-properties-common
-                        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-                        add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-                        apt-get update
-                        apt-get install -y docker-ce
-                        docker --version
-                    '''
+                    sh 'apt-get update && apt-get install -y docker.io'
                 }
             }
         }
