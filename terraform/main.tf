@@ -96,68 +96,68 @@ resource "ibm_is_instance" "vm_bd" {
   keys = [ibm_is_ssh_key.ssh_key_vm.id]
 }
 
-resource "ibm_is_floating_ip" "public_ip_vm" {
-  name           = "pip-vm-bd-acajas"
-  resource_group = var.rg_id
-  target         = ibm_is_instance.vm_bd.primary_network_interface.0.id
-}
+# resource "ibm_is_floating_ip" "public_ip_vm" {
+#   name           = "pip-vm-bd-acajas"
+#   resource_group = var.rg_id
+#   target         = ibm_is_instance.vm_bd.primary_network_interface.0.id
+# }
 
-resource "ibm_is_vpc" "vpc_cluster" {
-  name           = "vpc-cluster-acajas"
-  resource_group = var.rg_id
-}
+# resource "ibm_is_vpc" "vpc_cluster" {
+#   name           = "vpc-cluster-acajas"
+#   resource_group = var.rg_id
+# }
 
-resource "ibm_is_subnet" "subnet_cluster" {
-  name            = "subnet-cluster-acajas"
-  vpc             = ibm_is_vpc.vpc_cluster.id
-  resource_group  = var.rg_id
-  zone            = var.zone
-  ipv4_cidr_block = "10.242.0.0/24"
-  public_gateway = ibm_is_public_gateway.public_gateway_cluster.id
-}
+# resource "ibm_is_subnet" "subnet_cluster" {
+#   name            = "subnet-cluster-acajas"
+#   vpc             = ibm_is_vpc.vpc_cluster.id
+#   resource_group  = var.rg_id
+#   zone            = var.zone
+#   ipv4_cidr_block = "10.242.0.0/24"
+#   public_gateway = ibm_is_public_gateway.public_gateway_cluster.id
+# }
 
-resource "ibm_resource_instance" "cos_instance" {
-  name              = "acajas-cos-instance"
-  service           = "cloud-object-storage"
-  plan              = "standard"
-  location          = "global"
-  resource_group_id = var.rg_id
-}
+# resource "ibm_resource_instance" "cos_instance" {
+#   name              = "acajas-cos-instance"
+#   service           = "cloud-object-storage"
+#   plan              = "standard"
+#   location          = "global"
+#   resource_group_id = var.rg_id
+# }
 
-resource "ibm_container_vpc_cluster" "cluster" {
-  name              = "acajas-vpc-cluster"
-  vpc_id            = ibm_is_vpc.vpc_cluster.id
-  kube_version      = "4.16.23_openshift"
-  flavor            = "bx2.4x16"
-  worker_count      = "2"
-  cos_instance_crn  = ibm_resource_instance.cos_instance.id
-  resource_group_id = var.rg_id
-  zones {
-    subnet_id = ibm_is_subnet.subnet_cluster.id
-    name      = var.zone
-  }
-}
+# resource "ibm_container_vpc_cluster" "cluster" {
+#   name              = "acajas-vpc-cluster"
+#   vpc_id            = ibm_is_vpc.vpc_cluster.id
+#   kube_version      = "4.16.23_openshift"
+#   flavor            = "bx2.4x16"
+#   worker_count      = "2"
+#   cos_instance_crn  = ibm_resource_instance.cos_instance.id
+#   resource_group_id = var.rg_id
+#   zones {
+#     subnet_id = ibm_is_subnet.subnet_cluster.id
+#     name      = var.zone
+#   }
+# }
 
 resource "ibm_cr_namespace" "cr_namespace" {
   name              = "acajas-cr-namespace"
   resource_group_id = var.rg_id
 }
 
-resource "ibm_is_security_group" "sg_cluster" {
-  name           = "sg-cluster-acajas"
-  vpc            = ibm_is_vpc.vpc_cluster.id
-  resource_group = var.rg_id
-}
+# resource "ibm_is_security_group" "sg_cluster" {
+#   name           = "sg-cluster-acajas"
+#   vpc            = ibm_is_vpc.vpc_cluster.id
+#   resource_group = var.rg_id
+# }
 
-resource "ibm_is_security_group_rule" "internet_cluster" {
-  direction = "outbound"
-  remote    = "0.0.0.0/0"
-  group     = ibm_is_security_group.sg_cluster.id
-}
+# resource "ibm_is_security_group_rule" "internet_cluster" {
+#   direction = "outbound"
+#   remote    = "0.0.0.0/0"
+#   group     = ibm_is_security_group.sg_cluster.id
+# }
 
-resource "ibm_is_public_gateway" "public_gateway_cluster" {
-  name           = "acajas-vpc-cluster-gateway"
-  vpc            = ibm_is_vpc.vpc_cluster.id
-  zone           = var.zone
-  resource_group = var.rg_id
-}
+# resource "ibm_is_public_gateway" "public_gateway_cluster" {
+#   name           = "acajas-vpc-cluster-gateway"
+#   vpc            = ibm_is_vpc.vpc_cluster.id
+#   zone           = var.zone
+#   resource_group = var.rg_id
+# }
