@@ -1,7 +1,7 @@
 pipeline {
     agent any // Usar cualquier agente disponible (puedes configurarlo según tu entorno)
     environment {
-        APIKEY_IBM_ACAJAS = credentials('apikey_ibm_acajas') // Asegúrate de configurar este secreto en Jenkins
+        APIKEY_IBM_ACAJAS = credentials('APIKEY_IBM_ACAJAS') // Asegúrate de configurar este secreto en Jenkins
     }
     parameters {
         booleanParam(name: 'MANUAL_TRIGGER', defaultValue: false, description: 'Ejecutar manualmente el pipeline')
