@@ -1,7 +1,7 @@
 pipeline {
     agent any // Usar cualquier agente disponible (puedes configurarlo según tu entorno)
     environment {
-        APIKEY_IBM = credentials('apikey_ibm') // Asegúrate de configurar este secreto en Jenkins
+        APIKEY_IBM_ACAJAS = credentials('apikey_ibm_acajas') // Asegúrate de configurar este secreto en Jenkins
     }
     parameters {
         booleanParam(name: 'MANUAL_TRIGGER', defaultValue: false, description: 'Ejecutar manualmente el pipeline')
@@ -73,7 +73,7 @@ pipeline {
             steps {
                 echo 'Iniciando sesión en IBM Cloud...'
                 sh '''
-                    ibmcloud login --apikey ${APIKEY_IBM} -r eu-gb
+                    ibmcloud login --apikey ${APIKEY_IBM_ACAJAS} -r eu-gb
                     ibmcloud target -g Stemdo_Sandbox
                 '''
             }
