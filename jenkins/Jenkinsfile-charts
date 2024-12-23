@@ -1,0 +1,116 @@
+pipeline {
+    agent any // Usar cualquier agente disponible (puedes configurarlo según tu entorno)
+    environment {
+        APIKEY_IBM = credentials('apikey_ibm') // Asegúrate de configurar este secreto en Jenkins
+    }
+    parameters {
+        booleanParam(name: 'MANUAL_TRIGGER', defaultValue: false, description: 'Ejecutar manualmente el pipeline')
+    }
+    triggers {
+        pollSCM('H/5 * * * *') // Verifica cambios cada 5 minutos (puedes usar webhooks para mejor precisión)
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                echo 'Clonando el repositorio...'
+                checkout scm
+            }
+        }
+
+        stage('Instalar Helm') {
+            steps {
+                echo 'Instalando Helm...'
+                sh '''
+                    curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+                    chmod 700 get_helm.sh
+                    ./get_helm.sh
+                '''
+            }
+        }
+
+        stage('Comprimir Charts') {
+            steps {
+                echo 'Empaquetando charts de Helm...'
+                dir('charts') {
+                    sh '''
+                        helm package ./backend/
+                        helm package ./frontend/
+                    '''
+                }
+            }
+        }
+
+        stage('Version del Backend') {
+            steps {
+                echo 'Obteniendo versión del backend...'
+                script {
+                    def version = sh(script: "grep '^version:' charts/backend/Chart.yaml | awk '{print \$2}'", returnStdout: true).trim()
+                    env.BACK_VERSION = version
+                    echo "Versión del backend: ${env.BACK_VERSION}"
+                }
+            }
+        }
+
+        stage('Version del Frontend') {
+            steps {
+                echo 'Obteniendo versión del frontend...'
+                script {
+                    def version = sh(script: "grep '^version:' charts/frontend/Chart.yaml | awk '{print \$2}'", returnStdout: true).trim()
+                    env.FRONT_VERSION = version
+                    echo "Versión del frontend: ${env.FRONT_VERSION}"
+                }
+            }
+        }
+
+        stage('Instalar IBM CLI') {
+            steps {
+                echo 'Instalando IBM CLI...'
+                sh 'curl -fsSL https://clis.cloud.ibm.com/install/linux | sh'
+            }
+        }
+
+        stage('IBM Cloud Login') {
+            steps {
+                echo 'Iniciando sesión en IBM Cloud...'
+                sh '''
+                    ibmcloud login --apikey ${APIKEY_IBM} -r eu-gb
+                    ibmcloud target -g Stemdo_Sandbox
+                '''
+            }
+        }
+
+        stage('Instalar Plugin CR') {
+            steps {
+                echo 'Instalando plugin de Container Registry...'
+                sh 'ibmcloud plugin install container-registry'
+            }
+        }
+
+        stage('Login en IBM Container Registry') {
+            steps {
+                echo 'Iniciando sesión en IBM Container Registry...'
+                sh 'ibmcloud cr login --client docker'
+            }
+        }
+
+        stage('Push de los Charts') {
+            steps {
+                echo 'Subiendo charts al Container Registry de IBM...'
+                dir('charts') {
+                    sh '''
+                        helm push backend-${BACK_VERSION}.tgz oci://uk.icr.io/acajas-cr-namespace/acajas
+                        helm push frontend-${FRONT_VERSION}.tgz oci://uk.icr.io/acajas-cr-namespace/acajas
+                    '''
+                }
+            }
+        }
+    }
+    post {
+        success {
+            echo 'Pipeline ejecutado exitosamente.'
+        }
+        failure {
+            echo 'El pipeline ha fallado.'
+        }
+    }
+}
