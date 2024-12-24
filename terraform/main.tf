@@ -31,14 +31,14 @@ provider "ibm" {
 #   resource_group = var.rg_id
 # }
 
-data "ibm_is_vpc" "vpc_cluster" {
-  name = "ez-ibm-openshift-vpc-dcp4"
-  resource_group = var.rg_id
-}
+# data "ibm_is_vpc" "vpc_cluster" {
+#   name = "ez-ibm-openshift-vpc-dcp4"
+#   resource_group = var.rg_id
+# }
 
 resource "ibm_is_subnet" "subnet_vm" {
   name           = "subnet-vm-acajas"
-  vpc            = data.ibm_is_vpc.vpc_cluster.id
+  vpc            = "r050-4368bf72-fe4a-4fb0-a7ff-baccf91a74a4"
   resource_group = var.rg_id
   zone           = "eu-es-1"
   # ipv4_cidr_block = "10.251.1.0/24"
@@ -46,7 +46,7 @@ resource "ibm_is_subnet" "subnet_vm" {
 
 resource "ibm_is_security_group" "sg_vm" {
   name           = "sg-vm-acajas"
-  vpc            = data.ibm_is_vpc.vpc_cluster.id
+  vpc            = "r050-4368bf72-fe4a-4fb0-a7ff-baccf91a74a4"
   resource_group = var.rg_id
 }
 
@@ -69,7 +69,7 @@ resource "ibm_is_security_group_rule" "ssh" {
 
 resource "ibm_is_public_gateway" "public_gateway" {
   name           = "acajas-vpc-vm-gateway"
-  vpc            = data.ibm_is_vpc.vpc_cluster.id
+  vpc            = "r050-4368bf72-fe4a-4fb0-a7ff-baccf91a74a4"
   zone           = "eu-es-1"
   resource_group = var.rg_id
 }
@@ -84,7 +84,7 @@ resource "ibm_is_instance" "vm_bd" {
   name           = "vm-bd-acajas"
   image          = "r018-941eb02e-ceb9-44c8-895b-b31d241f43b5"
   profile        = "bx2-2x8"
-  vpc            = data.ibm_is_vpc.vpc_cluster.id
+  vpc            = "r050-4368bf72-fe4a-4fb0-a7ff-baccf91a74a4"
   zone           = "eu-es-1"
   resource_group = var.rg_id
 
