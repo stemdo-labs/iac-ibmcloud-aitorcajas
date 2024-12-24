@@ -26,17 +26,21 @@ provider "ibm" {
 #   region = var.region
 # }
 
-resource "ibm_is_vpc" "vpc_vm" {
-  name           = "vpc-vm-acajas"
-  resource_group = var.rg_id
+# resource "ibm_is_vpc" "vpc_vm" {
+#   name           = "vpc-vm-acajas"
+#   resource_group = var.rg_id
+# }
+
+data "ibm_is_vpc" "vpc_cluster" {
+  name = "ez-ibm-openshift-vpc-dcp4"
 }
 
 resource "ibm_is_subnet" "subnet_vm" {
   name            = "subnet-vm-acajas"
-  vpc             = ibm_is_vpc.vpc_vm.id
+  vpc             = data.ibm_is_vpc.vpc_cluster.id
   resource_group  = var.rg_id
   zone            = "eu-es-1"
-  ipv4_cidr_block = "10.242.0.0/24"
+  # ipv4_cidr_block = "10.251.1.0/24"
 }
 
 resource "ibm_is_security_group" "sg_vm" {
