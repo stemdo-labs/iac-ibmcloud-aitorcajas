@@ -82,7 +82,7 @@ resource "ibm_is_ssh_key" "ssh_key_vm" {
 
 resource "ibm_is_instance" "vm_bd" {
   name           = "vm-bd-acajas"
-  image          = "r018-941eb02e-ceb9-44c8-895b-b31d241f43b5"
+  image          = "r050-8bddef68-ebaf-481f-a87e-a526f159b192"
   profile        = "bx2-2x8"
   vpc            = "r050-4368bf72-fe4a-4fb0-a7ff-baccf91a74a4"
   zone           = "eu-es-1"
