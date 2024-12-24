@@ -94,7 +94,7 @@ resource "ibm_is_instance" "vm_bd" {
     security_groups   = [ibm_is_security_group.sg_vm.id]
     primary_ip {
       auto_delete = false
-      address     = "10.242.0.4"
+      address     = "10.251.1.6"
     }
   }
 
