@@ -9,15 +9,26 @@ terraform {
 
 provider "ibm" {
   ibmcloud_api_key = var.ibmcloud_api_key
-  region           = "eu-es"
+  region           = var.region
 }
 
-# module "vm" {
-#   source = "./modules/vm"
-#   rg_id  = var.rg_id
-#   zone   = var.zone
-#   region = var.region
-# }
+module "networks" {
+  source = "./modules/networks"
+  rg_id  = var.rg_id
+  zone   = var.zone
+  region = var.region
+  vpc_id = var.vpc_id
+}
+
+module "vm" {
+  source    = "./modules/vm"
+  rg_id     = var.rg_id
+  zone      = var.zone
+  region    = var.region
+  vpc_id    = var.vpc_id
+  id_subnet = module.networks.id_subnet
+  id_sg     = module.networks.id_sg
+}
 
 # module "cluster" {
 #   source = "./modules/cluster"
@@ -36,70 +47,12 @@ provider "ibm" {
 #   resource_group = var.rg_id
 # }
 
-resource "ibm_is_subnet" "subnet_vm" {
-  name           = "subnet-vm-acajas"
-  vpc            = "r050-4368bf72-fe4a-4fb0-a7ff-baccf91a74a4"
-  resource_group = var.rg_id
-  zone           = "eu-es-1"
-  ipv4_cidr_block = "10.251.1.0/24"
-}
-
-resource "ibm_is_security_group" "sg_vm" {
-  name           = "sg-vm-acajas"
-  vpc            = "r050-4368bf72-fe4a-4fb0-a7ff-baccf91a74a4"
-  resource_group = var.rg_id
-}
-
-resource "ibm_is_security_group_rule" "internet" {
-  direction = "outbound"
-  remote    = "0.0.0.0/0"
-  group     = ibm_is_security_group.sg_vm.id
-}
-
-resource "ibm_is_security_group_rule" "ssh" {
-  direction = "inbound"
-  remote    = "0.0.0.0/0"
-  group     = ibm_is_security_group.sg_vm.id
-
-  tcp {
-    port_min = 22
-    port_max = 22
-  }
-}
-
 # resource "ibm_is_public_gateway" "public_gateway" {
 #   name           = "acajas-vpc-vm-gateway"
 #   vpc            = "r050-4368bf72-fe4a-4fb0-a7ff-baccf91a74a4"
 #   zone           = "eu-es-1"
 #   resource_group = var.rg_id
 # }
-
-resource "ibm_is_ssh_key" "ssh_key_vm" {
-  name           = "public-ssh-key"
-  public_key     = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC/yhO+AunpWhYviv0+oBd+bwRx3cAN+0SzKEC9OKdiU7Q65A+U899NgitI1Qr4tsujo7/o8qw/w707wXn8tfeWB2pTiVUJ9qap90jtaMSDwPs9VYxWDFS687vxZ8k9N0Fmws0cg8qxdhoFJJU0OcjI0mQLZmFohr1el9ZEdxW+NWDfWy22e70DIlVO4oqv05OUV8yXZDFeOxVGxWAEJt0UsQGoup8m1cSEOkbrqnmrxDD93/sYBDMHf6aemoY9bCu9tJJGNg/hAt4pPzmtz/iVgoBHLOhPIintL5xD6DU304dkvY4y7eoNorMW5BzOdxRwYlb3fibYITQv5dJALPaygEmqEOWDFlNyWbHmcM5RsjrVnRvD19sS+ZPVucqAzomp9k83Fvm0csBxObf0QiYLJuIG66a7q1Pfamj6izVG4Cc9jrTwllQdLqv3Nri9pCBvuueDNWm8B8mJp4bWYaNuWFr9PnKJ8XWU+3puoi+9SFxKoXyU+ql1C9sXiWGKHsU="
-  resource_group = var.rg_id
-}
-
-resource "ibm_is_instance" "vm_bd" {
-  name           = "vm-bd-acajas"
-  image          = "r050-8bddef68-ebaf-481f-a87e-a526f159b192"
-  profile        = "bx2-2x8"
-  vpc            = "r050-4368bf72-fe4a-4fb0-a7ff-baccf91a74a4"
-  zone           = "eu-es-1"
-  resource_group = var.rg_id
-
-  primary_network_interface {
-    subnet            = ibm_is_subnet.subnet_vm.id
-    allow_ip_spoofing = true
-    security_groups   = [ibm_is_security_group.sg_vm.id]
-    primary_ip {
-      auto_delete = false
-      address     = "10.251.1.6"
-    }
-  }
-
-  keys = [ibm_is_ssh_key.ssh_key_vm.id]
-}
 
 # resource "ibm_is_floating_ip" "public_ip_vm" {
 #   name           = "pip-vm-bd-acajas"
@@ -142,11 +95,6 @@ resource "ibm_is_instance" "vm_bd" {
 #     name      = var.zone
 #   }
 # }
-
-resource "ibm_cr_namespace" "cr_namespace" {
-  name              = "acajas-cr-namespace"
-  resource_group_id = var.rg_id
-}
 
 # resource "ibm_is_security_group" "sg_cluster" {
 #   name           = "sg-cluster-acajas"
