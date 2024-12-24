@@ -33,6 +33,7 @@ provider "ibm" {
 
 data "ibm_is_vpc" "vpc_cluster" {
   name = "ez-ibm-openshift-vpc-dcp4"
+  resource_group = var.rg_id
 }
 
 resource "ibm_is_subnet" "subnet_vm" {
