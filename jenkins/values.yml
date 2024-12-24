@@ -1,2 +1,8 @@
 rbac:
   useOpenShiftNonRootSCC: true
+
+persistence:
+  enabled: true
+  existingClaim: jenkins-pvc # Aquí especificas tu PVC existente
+  storageClass: "" # Vacío para no usar dynamic provisioning
+  size: 20Gi # Tamaño del volumen (debe coincidir con el PVC)

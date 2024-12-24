@@ -35,7 +35,7 @@ resource "ibm_is_subnet" "subnet_vm" {
   name            = "subnet-vm-acajas"
   vpc             = ibm_is_vpc.vpc_vm.id
   resource_group  = var.rg_id
-  zone            = var.zone
+  zone            = "eu-es-1"
   ipv4_cidr_block = "10.242.0.0/24"
 }
 
@@ -65,7 +65,7 @@ resource "ibm_is_security_group_rule" "ssh" {
 resource "ibm_is_public_gateway" "public_gateway" {
   name           = "acajas-vpc-vm-gateway"
   vpc            = ibm_is_vpc.vpc_vm.id
-  zone           = var.zone
+  zone           = "eu-es-1"
   resource_group = var.rg_id
 }
 
@@ -80,7 +80,7 @@ resource "ibm_is_instance" "vm_bd" {
   image          = "r018-941eb02e-ceb9-44c8-895b-b31d241f43b5"
   profile        = "bx2-2x8"
   vpc            = ibm_is_vpc.vpc_vm.id
-  zone           = var.zone
+  zone           = "eu-es-1"
   resource_group = var.rg_id
 
   primary_network_interface {

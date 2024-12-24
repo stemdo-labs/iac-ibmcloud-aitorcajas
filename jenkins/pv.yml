@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jenkins-pv-acajas
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath: # O usa NFS/Block Storage según tu entorno
+    path: /mnt/data/jenkins
