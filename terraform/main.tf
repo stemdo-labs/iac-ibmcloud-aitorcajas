@@ -41,7 +41,7 @@ resource "ibm_is_subnet" "subnet_vm" {
   vpc            = "r050-4368bf72-fe4a-4fb0-a7ff-baccf91a74a4"
   resource_group = var.rg_id
   zone           = "eu-es-1"
-  # ipv4_cidr_block = "10.251.1.0/24"
+  ipv4_cidr_block = "10.251.1.0/24"
 }
 
 resource "ibm_is_security_group" "sg_vm" {
@@ -67,12 +67,12 @@ resource "ibm_is_security_group_rule" "ssh" {
   }
 }
 
-resource "ibm_is_public_gateway" "public_gateway" {
-  name           = "acajas-vpc-vm-gateway"
-  vpc            = "r050-4368bf72-fe4a-4fb0-a7ff-baccf91a74a4"
-  zone           = "eu-es-1"
-  resource_group = var.rg_id
-}
+# resource "ibm_is_public_gateway" "public_gateway" {
+#   name           = "acajas-vpc-vm-gateway"
+#   vpc            = "r050-4368bf72-fe4a-4fb0-a7ff-baccf91a74a4"
+#   zone           = "eu-es-1"
+#   resource_group = var.rg_id
+# }
 
 resource "ibm_is_ssh_key" "ssh_key_vm" {
   name           = "public-ssh-key"
