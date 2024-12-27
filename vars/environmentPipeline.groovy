@@ -1,6 +1,5 @@
 // vars/environmentPipeline.groovy
 def call() {
-    whoami
     // Obtener la rama y definir el entorno
     def branch = env.BRANCH_NAME ?: 'main' // Si no hay BRANCH_NAME, se asume 'main'
     
