@@ -18,8 +18,6 @@ def call(Map pipelineParams) {
                             env.ENVIRONMENT = 'production'
                         } else if (branch == 'origin/develop') {
                             env.ENVIRONMENT = 'development'
-                        } else {
-                            error "Branch no reconocido: ${branch}"
                         }
                         echo "Entorno definido: ${env.ENVIRONMENT}"
                     }
@@ -29,8 +27,8 @@ def call(Map pipelineParams) {
             stage('Extraer Desarrollo') {
                 steps {
                     script {
-                        def repoName = sh(script: "basename \$(git rev-parse --show-toplevel)", returnStdout: true).trim()
-                        echo "Nombre del repositorio: ${repoName}"
+                        def pipelineName = sh(script: "basename \$(git rev-parse --show-toplevel)", returnStdout: true).trim()
+                        echo "Nombre de la pipeline: ${repoName}"
                         if (repoName.contains("backend") && env.ENVIRONMENT == 'production') {
                             env.DESARROLLO = 'backend-production'
                         } else if (repoName.contains("backend") && env.ENVIRONMENT == 'development') {
@@ -39,8 +37,6 @@ def call(Map pipelineParams) {
                             env.DESARROLLO = 'frontend-production'
                         } else if (repoName.contains("frontend") && env.ENVIRONMENT == 'development') {
                             env.DESARROLLO = 'frontend-development'
-                        } else {
-                            error "Repositorio o entorno no reconocido"
                         }
                         echo "Desarrollo configurado: ${env.DESARROLLO}"
                     }
