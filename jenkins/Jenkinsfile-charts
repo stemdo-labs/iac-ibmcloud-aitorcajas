@@ -24,7 +24,7 @@ pipeline {
         stage('Instalar Docker') {
             steps {
                 script {
-                    whoami
+                    sh 'whoami'
                     sh '''
                         # Add Docker's official GPG key:
                         apt-get update
