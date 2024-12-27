@@ -12,7 +12,7 @@ def call(Map pipelineParams) {
             stage('Definir Entorno') {
                 steps {
                     script {
-                        def branch = env.BRANCH_NAME
+                        def branch = env.GIT_BRANCH
                         echo "Rama actual: ${branch}"
                         if (branch == 'main') {
                             env.ENVIRONMENT = 'production'
