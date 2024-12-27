@@ -1,7 +1,7 @@
 rbac:
   useOpenShiftNonRootSCC: true
 controller:
-  numExecutors: 4
+  numExecutors: 7
   route:
     enabled: true
 
