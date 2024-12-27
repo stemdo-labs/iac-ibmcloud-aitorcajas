@@ -3,9 +3,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: jenkins-pvc-acajas
 spec:
+  storageClassName: jenkins
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 20Gi
-  storageClassName: ""

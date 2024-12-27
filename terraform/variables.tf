@@ -15,8 +15,10 @@ variable "rg_id" {
 
 variable "zone" {
   description = "Zona"
+  type        = string
 }
 
 variable "vpc_id" {
   description = "ID de la red del cluster"
+  type        = string
 }

@@ -6,7 +6,8 @@ spec:
   capacity:
     storage: 20Gi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
-  hostPath: # O usa NFS/Block Storage según tu entorno
+  hostPath:
     path: /mnt/data/jenkins
+  storageClassName: jenkins
