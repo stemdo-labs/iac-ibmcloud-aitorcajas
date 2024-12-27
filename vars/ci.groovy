@@ -1,4 +1,3 @@
-// vars/ci.groovy
 def call(String entorno) {
     pipeline {
         agent any
