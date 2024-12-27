@@ -29,14 +29,14 @@ def call(Map pipelineParams) {
                 steps {
                     script {
                         def pipelineName = sh(script: "basename \$(git rev-parse --show-toplevel)", returnStdout: true).trim()
-                        echo "Nombre de la pipeline: ${repoName}"
-                        if (repoName.contains("backend") && env.ENVIRONMENT == 'production') {
+                        echo "Nombre de la pipeline: ${pipelineName}"
+                        if (pipelineName.contains("backend") && env.ENVIRONMENT == 'production') {
                             env.DESARROLLO = 'backend-production'
-                        } else if (repoName.contains("backend") && env.ENVIRONMENT == 'development') {
+                        } else if (pipelineName.contains("backend") && env.ENVIRONMENT == 'development') {
                             env.DESARROLLO = 'backend-development'
-                        } else if (repoName.contains("frontend") && env.ENVIRONMENT == 'production') {
+                        } else if (pipelineName.contains("frontend") && env.ENVIRONMENT == 'production') {
                             env.DESARROLLO = 'frontend-production'
-                        } else if (repoName.contains("frontend") && env.ENVIRONMENT == 'development') {
+                        } else if (pipelineName.contains("frontend") && env.ENVIRONMENT == 'development') {
                             env.DESARROLLO = 'frontend-development'
                         }
                         echo "Desarrollo configurado: ${env.DESARROLLO}"
