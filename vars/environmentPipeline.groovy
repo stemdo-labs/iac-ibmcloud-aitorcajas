@@ -6,7 +6,7 @@ def call(Map pipelineParams) {
             stage('Definir Entorno') {
                 steps {
                     script {
-                        def branch = env.GIT_BRANCH
+                        def branch = env.BRANCH_NAME
                         if (branch == 'main') {
                             env.ENVIRONMENT = 'production'
                         } else if (branch == 'develop') {
