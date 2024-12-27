@@ -14,9 +14,9 @@ def call(Map pipelineParams) {
                     script {
                         def branch = env.GIT_BRANCH
                         echo "Rama actual: ${branch}"
-                        if (branch == 'main') {
+                        if (branch == 'origin/main') {
                             env.ENVIRONMENT = 'production'
-                        } else if (branch == 'develop') {
+                        } else if (branch == 'origin/develop') {
                             env.ENVIRONMENT = 'development'
                         } else {
                             error "Branch no reconocido: ${branch}"
@@ -30,6 +30,7 @@ def call(Map pipelineParams) {
                 steps {
                     script {
                         def repoName = sh(script: "basename \$(git rev-parse --show-toplevel)", returnStdout: true).trim()
+                        echo "Nombre del repositorio: ${repoName}"
                         if (repoName.contains("backend") && env.ENVIRONMENT == 'production') {
                             env.DESARROLLO = 'backend-production'
                         } else if (repoName.contains("backend") && env.ENVIRONMENT == 'development') {
