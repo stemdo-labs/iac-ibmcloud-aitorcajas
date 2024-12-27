@@ -2,20 +2,17 @@ def call(Map pipelineParams) {
     pipeline {
         agent any
 
-        environment {
-            GITHUB_REF = env.BRANCH_NAME
-        }
-
         stages {
             stage('Definir Entorno') {
                 steps {
                     script {
-                        if (GITHUB_REF == 'main') {
+                        def branch = env.GIT_BRANCH
+                        if (branch == 'main') {
                             env.ENVIRONMENT = 'production'
-                        } else if (GITHUB_REF == 'develop') {
+                        } else if (branch == 'develop') {
                             env.ENVIRONMENT = 'development'
                         } else {
-                            error "Branch no reconocido: ${GITHUB_REF}"
+                            error "Branch no reconocido: ${branch}"
                         }
                         echo "Entorno definido: ${env.ENVIRONMENT}"
                     }
