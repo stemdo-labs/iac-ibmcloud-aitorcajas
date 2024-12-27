@@ -20,7 +20,7 @@ def call(Map pipelineParams) {
                             env.ENVIRONMENT = 'development'
                         }
                         echo "Entorno definido: ${env.ENVIRONMENT}"
-                        return env.ENVIRONMENT
+                        return "${env.ENVIRONMENT}"
                     }
                 }
             }
