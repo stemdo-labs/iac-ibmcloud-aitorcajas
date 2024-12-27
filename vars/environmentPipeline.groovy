@@ -3,6 +3,12 @@ def call(Map pipelineParams) {
         agent any
 
         stages {
+            stage('Checkout del Repositorio') {
+                steps {
+                    checkout scm
+                }
+            }
+
             stage('Definir Entorno') {
                 steps {
                     script {
@@ -18,12 +24,6 @@ def call(Map pipelineParams) {
                         }
                         echo "Entorno definido: ${env.ENVIRONMENT}"
                     }
-                }
-            }
-
-            stage('Checkout del Repositorio') {
-                steps {
-                    checkout scm
                 }
             }
 
