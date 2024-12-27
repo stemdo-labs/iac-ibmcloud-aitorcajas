@@ -12,8 +12,7 @@ def call(Map pipelineParams) {
             stage('Definir Entorno') {
                 steps {
                     script {
-                        // Obtener el nombre de la rama desde Git
-                        def branch = sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true).trim()
+                        def branch = env.BRANCH_NAME
                         echo "Rama actual: ${branch}"
                         if (branch == 'main') {
                             env.ENVIRONMENT = 'production'
