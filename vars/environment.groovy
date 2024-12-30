@@ -1,4 +1,4 @@
-def pipeline() {
+def environment() {
     node {
         stage('Checkout del Repositorio') {
             checkout scm
@@ -22,15 +22,15 @@ def pipeline() {
                 def pipelineName = sh(script: "basename \$(git rev-parse --show-toplevel)", returnStdout: true).trim()
                 echo "Nombre de la pipeline: ${pipelineName}"
                 if (pipelineName.contains("backend") && env.ENVIRONMENT == 'production') {
-                    env.DESARROLLO = 'backend-production'
+                    env.DEVELOPMENT = 'backend-production'
                 } else if (pipelineName.contains("backend") && env.ENVIRONMENT == 'development') {
-                    env.DESARROLLO = 'backend-development'
+                    env.DEVELOPMENT = 'backend-development'
                 } else if (pipelineName.contains("frontend") && env.ENVIRONMENT == 'production') {
-                    env.DESARROLLO = 'frontend-production'
+                    env.DESARRODEVELOPMENTLLO = 'frontend-production'
                 } else if (pipelineName.contains("frontend") && env.ENVIRONMENT == 'development') {
-                    env.DESARROLLO = 'frontend-development'
+                    env.DEVELOPMENT = 'frontend-development'
                 }
-                echo "Desarrollo configurado: ${env.DESARROLLO}"
+                echo "Desarrollo configurado: ${env.DEVELOPMENT}"
             }
         }
     }
