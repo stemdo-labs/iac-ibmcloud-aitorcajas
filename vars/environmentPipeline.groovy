@@ -45,3 +45,5 @@ def ejecutarPipeline() {
         }
     }
 }
+
+return this
