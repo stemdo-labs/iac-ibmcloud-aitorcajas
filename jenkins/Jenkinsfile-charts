@@ -1,10 +1,6 @@
 pipeline {
-     agent {
-        kubernetes {
-            label 'docker'
-            defaultContainer 'docker'
-        }
-    }
+    agent any
+
     environment {
         APIKEY_IBM_ACAJAS = credentials('APIKEY_IBM_ACAJAS')
     }
