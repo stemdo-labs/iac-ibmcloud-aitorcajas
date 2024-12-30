@@ -1,7 +1,5 @@
-pipeline {
-    agent any
-
-    stages {
+def ejecutarPipeline() {
+    node {
         stage('Checkout del Repositorio') {
             steps {
                 checkout scm
@@ -43,3 +41,5 @@ pipeline {
         }
     }
 }
+
+return this
