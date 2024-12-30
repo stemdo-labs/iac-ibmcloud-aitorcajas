@@ -5,6 +5,23 @@ controller:
   route:
     enabled: true
 
+agent:
+  additionalContainers:
+   - sideContainerName: dind
+     image:
+       repository: docker
+       tag: dind
+     command: dockerd-entrypoint.sh
+     args: ""
+     privileged: true
+     resources:
+       requests:
+         cpu: 500m
+         memory: 1Gi
+       limits:
+         cpu: 1
+         memory: 2Gi
+
 # persistence:
 #   enabled: true
 #   existingClaim: jenkins-pvc

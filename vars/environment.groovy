@@ -1,4 +1,4 @@
-def ejecutarPipeline() {
+def pipeline() {
     node {
         stage('Checkout del Repositorio') {
             checkout scm
