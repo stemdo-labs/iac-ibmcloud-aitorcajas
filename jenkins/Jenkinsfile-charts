@@ -1,15 +1,15 @@
 pipeline {
-    agent any
+    agent {
+        kubernetes {
+            label 'jenkins-jenkins-agent'
+            defaultContainer 'jnlp'
+        }
+    }
 
     environment {
         APIKEY_IBM_ACAJAS = credentials('APIKEY_IBM_ACAJAS')
     }
-    parameters {
-        booleanParam(name: 'MANUAL_TRIGGER', defaultValue: false, description: 'Ejecutar manualmente el pipeline')
-    }
-    triggers {
-        pollSCM('H/5 * * * *')
-    }
+    
     stages {
         stage('Checkout') {
             steps {
@@ -119,14 +119,6 @@ pipeline {
                     '''
                 }
             }
-        }
-    }
-    post {
-        success {
-            echo 'Pipeline ejecutado exitosamente.'
-        }
-        failure {
-            echo 'El pipeline ha fallado.'
         }
     }
 }
