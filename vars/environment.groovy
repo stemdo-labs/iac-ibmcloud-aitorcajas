@@ -22,15 +22,15 @@ def environment() {
                 def pipelineName = sh(script: "basename \$(git rev-parse --show-toplevel)", returnStdout: true).trim()
                 echo "Nombre de la pipeline: ${pipelineName}"
                 if (pipelineName.contains("backend") && env.ENVIRONMENT == 'production') {
-                    env.DEVELOPMENT = 'backend-production'
+                    env.DESARROLLO = 'backend-production'
                 } else if (pipelineName.contains("backend") && env.ENVIRONMENT == 'development') {
-                    env.DEVELOPMENT = 'backend-development'
+                    env.DESARROLLO = 'backend-development'
                 } else if (pipelineName.contains("frontend") && env.ENVIRONMENT == 'production') {
-                    env.DESARRODEVELOPMENTLLO = 'frontend-production'
+                    env.DESARROLLO = 'frontend-production'
                 } else if (pipelineName.contains("frontend") && env.ENVIRONMENT == 'development') {
-                    env.DEVELOPMENT = 'frontend-development'
+                    env.DESARROLLO = 'frontend-development'
                 }
-                echo "Desarrollo configurado: ${env.DEVELOPMENT}"
+                echo "Desarrollo configurado: ${env.DESARROLLO}"
             }
         }
     }
