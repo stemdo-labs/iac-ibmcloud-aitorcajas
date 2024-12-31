@@ -13,6 +13,7 @@ def ci(String entorno, String desarrollo) {
 
         stage('Extraer versión') {
             script {
+                sh 'cat pom.xml'
                 def repoName = env.REPO_NAME ?: sh(script: "echo ${env.GIT_URL} | awk -F'/' '{print \$NF}' | sed 's/.git\$//'", returnStdout: true).trim()
                 echo "Nombre del repositorio: ${repoName}"
                 if (repoName.contains('backend')) {
