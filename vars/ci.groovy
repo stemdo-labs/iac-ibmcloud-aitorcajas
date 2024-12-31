@@ -27,12 +27,10 @@ def ci(String entorno, String desarrollo) {
         }
 
         stage('Cargar imagen') {
-            steps {
-                script {
-                    def imageName = sh(script: "echo ${desarrollo}:${version}", returnStdout: true).trim()
-                    env.IMAGE_NAME = imageName
-                    echo "Image name: ${env.IMAGE_NAME}"
-                }
+            script {
+                def imageName = sh(script: "echo ${desarrollo}:${version}", returnStdout: true).trim()
+                env.IMAGE_NAME = imageName
+                echo "Image name: ${env.IMAGE_NAME}"
             }
         }
     }
