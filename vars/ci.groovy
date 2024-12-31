@@ -1,9 +1,9 @@
-def ci() {
+def ci(String entorno, String desarollo) {
     node {
-        // stage('Preparación') {
-        //     echo "Entorno: ${env.ENVIRONMENT}"
-        //     echo "Desarrollo: ${env.DEVELOPMENT}"
-        // }
+        stage('Preparación') {
+            echo "Entorno: ${entorno}"
+            echo "Desarrollo: ${desarrollo}"
+        }
 
         stage('Checkout Code') {
             checkout scm
