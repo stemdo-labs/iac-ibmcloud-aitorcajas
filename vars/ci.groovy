@@ -16,15 +16,16 @@ def ci() {
 
         stage('Extraer versión') {
             script {
-                def pipelineName = env.GIT_URL.split('/')[4]
-                if (pipelineName.contains('backend')) {
-                    def version = sh(script: "grep -oP '<version>\\K[^\<]+' pom.xml | sed -n '2p'", returnStdout: true).trim()
-                    currentBuild.description = "Version: ${version}"
+                def repoName = env.REPO_NAME ?: sh(script: "echo ${env.GIT_URL} | awk -F'/' '{print \$NF}' | sed 's/.git\$//'", returnStdout: true).trim()
+                echo "Nombre del repositorio: ${repoName}"
+                if (repoName.contains('backend')) {
+                    def version = sh(script: "grep -oP '<version>\\\\K[^<]+' pom.xml | sed -n '2p'", returnStdout: true).trim()
                     env.VERSION = version
-                } else if (pipelineName.contains('frontend')) {
+                    echo "Versión (backend): ${version}"
+                } else if (repoName.contains('frontend')) {
                     def version = sh(script: "jq -r '.version' package.json", returnStdout: true).trim()
-                    currentBuild.description = "Version: ${version}"
                     env.VERSION = version
+                    echo "Versión (frontend): ${version}"
                 }
             }
         }
