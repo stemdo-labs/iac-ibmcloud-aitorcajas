@@ -37,7 +37,7 @@ def ci(String entorno, String desarrollo) {
 
         stage('Build de la imagen') {
             script {
-                sh 'docker build -t ${imageName} .'
+                docker build -t "${imageName}" .
             }
         }
     }
