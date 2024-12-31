@@ -35,21 +35,6 @@ def ci(String entorno, String desarrollo) {
             }
         }
 
-        stage('Preparar Entorno') {
-            container('tools') {
-                sh '''
-                    apt-get update && apt-get install -y curl bash git docker.io
-                    curl -fsSL https://clis.cloud.ibm.com/install/linux | bash
-                    ibmcloud plugin install container-registry -r 'IBM Cloud'
-                    dockerd > /var/log/dockerd.log 2>&1 &
-                    sleep 10
-                    docker version
-                    ibmcloud --version
-                    ibmcloud plugin list
-                '''
-            }
-        }
-
         stage('Build de la imagen') {
             script {
                 sh 'docker build -t ${imageName} .'
