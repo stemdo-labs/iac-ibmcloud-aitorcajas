@@ -1,4 +1,4 @@
-def ci() {
+def ci(String entorno, String desarrollo) {
     node {
         environment {
             ENTORNO = entorno
