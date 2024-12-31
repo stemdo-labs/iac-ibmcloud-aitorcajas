@@ -1,13 +1,8 @@
-def ci(String entorno, String desarrollo) {
+def ci() {
     node {
-        environment {
-            ENTORNO = entorno
-            DESARROLLO = desarrollo
-        }
-
         stage('Preparación') {
-            echo "Entorno: ${ENTORNO}"
-            echo "Desarrollo: ${DESARROLLO}"
+            echo "Entorno: ${env.ENVIRONMENT}"
+            echo "Desarrollo: ${env.DEVELOPMENT}"
         }
 
         stage('Checkout Code') {
