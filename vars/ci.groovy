@@ -1,4 +1,4 @@
-def ci(String entorno, String desarollo) {
+def ci(String entorno, String desarrollo) {
     node {
         stage('Preparación') {
             echo "Entorno: ${entorno}"
