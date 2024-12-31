@@ -18,7 +18,7 @@ def ci() {
             script {
                 def pipelineName = env.GIT_URL.split('/')[4]
                 if (pipelineName.contains('backend')) {
-                    def version = sh(script: "grep -oP '<version>\K[^\<]+' pom.xml | sed -n '2p'", returnStdout: true).trim()
+                    def version = sh(script: "grep -oP '<version>\\K[^\<]+' pom.xml | sed -n '2p'", returnStdout: true).trim()
                     currentBuild.description = "Version: ${version}"
                     env.VERSION = version
                 } else if (pipelineName.contains('frontend')) {

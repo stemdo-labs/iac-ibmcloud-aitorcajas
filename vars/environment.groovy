@@ -7,7 +7,6 @@ def environment() {
         stage('Definir Entorno') {
             script {
                 def branch = env.GIT_BRANCH
-                echo "Rama actual: ${branch}"
                 if (branch == 'origin/main') {
                     env.ENVIRONMENT = 'production'
                 } else if (branch == 'origin/develop') {
