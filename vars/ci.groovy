@@ -15,7 +15,7 @@ def ci(String entorno, String desarrollo) {
                 def repoName = env.REPO_NAME ?: sh(script: "echo ${env.GIT_URL} | awk -F'/' '{print \$NF}' | sed 's/.git\$//'", returnStdout: true).trim()
                 echo "Nombre del repositorio: ${repoName}"
                 if (repoName.contains('backend')) {
-                    def version = sh(script: "grep -oP '<version>[^<]+' pom.xml | sed 's/<version>//' | head -n 1", returnStdout: true).trim()
+                    def version = sh(script: "grep -oP '<version>[^<]+' pom.xml | sed 's/<version>//' | sed -n '2p'", returnStdout: true).trim()
                     env.VERSION = version
                     echo "Versión (backend): ${version}"
                 } else if (repoName.contains('frontend')) {
