@@ -7,8 +7,8 @@ pipeline {
     }
 
     parameters {
-        string(name: 'desarrollo')
-        string(name: 'entorno')
+        string(name: 'desarrollo', defaultValue: 'develop-backend')
+        string(name: 'entorno', defaultValue: 'develop')
     }
 
     stages {
