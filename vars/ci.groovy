@@ -7,17 +7,15 @@ def ci(String entorno, String desarrollo) {
                 } else if (desarrollo.contains('frontend')) {
                     git branch: 'develop', url: 'https://github.com/stemdo-labs/final-project-gestion-orquestas-frontend-aitorcajas.git'
                 }
-                sh 'ls'
             }
         }
 
         stage('Extraer versión') {
             script {
-                sh 'cat pom.xml'
                 def repoName = env.REPO_NAME ?: sh(script: "echo ${env.GIT_URL} | awk -F'/' '{print \$NF}' | sed 's/.git\$//'", returnStdout: true).trim()
                 echo "Nombre del repositorio: ${repoName}"
                 if (repoName.contains('backend')) {
-                    def version = sh(script: "grep -oP '<version>\\\\K[^<]+' pom.xml | sed -n '2p'", returnStdout: true).trim()
+                    def version = sh(script: "grep -oP '<version>[^<]+' pom.xml | sed 's/<version>//' | head -n 1", returnStdout: true).trim()
                     env.VERSION = version
                     echo "Versión (backend): ${version}"
                 } else if (repoName.contains('frontend')) {

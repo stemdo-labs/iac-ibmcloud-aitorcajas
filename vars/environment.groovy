@@ -18,15 +18,15 @@ def environment() {
 
         stage('Extraer Desarrollo') {
             script {
-                def pipelineName = sh(script: "basename \$(git rev-parse --show-toplevel)", returnStdout: true).trim()
-                echo "Nombre de la pipeline: ${pipelineName}"
-                if (pipelineName.contains("backend") && env.ENVIRONMENT == 'production') {
+                def repoName = env.REPO_NAME ?: sh(script: "echo ${env.GIT_URL} | awk -F'/' '{print \$NF}' | sed 's/.git\$//'", returnStdout: true).trim()
+                echo "Nombre del repositorio: ${repoName}"
+                if (repoName.contains("backend") && env.ENVIRONMENT == 'production') {
                     env.DEVELOPMENT = 'backend-production'
-                } else if (pipelineName.contains("backend") && env.ENVIRONMENT == 'development') {
+                } else if (repoName.contains("backend") && env.ENVIRONMENT == 'development') {
                     env.DEVELOPMENT = 'backend-development'
-                } else if (pipelineName.contains("frontend") && env.ENVIRONMENT == 'production') {
+                } else if (repoName.contains("frontend") && env.ENVIRONMENT == 'production') {
                     env.DEVELOPMENT = 'frontend-production'
-                } else if (pipelineName.contains("frontend") && env.ENVIRONMENT == 'development') {
+                } else if (repoName.contains("frontend") && env.ENVIRONMENT == 'development') {
                     env.DEVELOPMENT = 'frontend-development'
                 }
                 echo "Desarrollo configurado: ${env.DEVELOPMENT}"
