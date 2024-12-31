@@ -1,0 +1,64 @@
+pipeline {
+    agent {
+      kubernetes {
+            label 'jenkins-jenkins-agent'
+            defaultContainer 'dind'
+        }
+    }
+
+    parameters {
+        string(name: 'desarrollo')
+        string(name: 'entorno')
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps{
+                script {
+                    if(desarrollo.contains('backend')) {
+                        git branch: 'develop', url: 'https://github.com/stemdo-labs/final-project-gestion-orquestas-backend-aitorcajas.git'
+                    } else if (desarrollo.contains('frontend')) {
+                        git branch: 'develop', url: 'https://github.com/stemdo-labs/final-project-gestion-orquestas-frontend-aitorcajas.git'
+                    }
+                }
+            }
+        }
+
+        stage('Extraer versión') {
+            steps {
+                script {
+                    def repoName = env.REPO_NAME ?: sh(script: "echo ${env.GIT_URL} | awk -F'/' '{print \$NF}' | sed 's/.git\$//'", returnStdout: true).trim()
+                    echo "Nombre del repositorio: ${repoName}"
+                    if (repoName.contains('backend')) {
+                        def version = sh(script: "grep -oP '<version>[^<]+' pom.xml | sed 's/<version>//' | sed -n '2p'", returnStdout: true).trim()
+                        env.VERSION = version
+                        echo "Versión (backend): ${version}"
+                    } else if (repoName.contains('frontend')) {
+                        def json = readJSON file: 'package.json'
+                        def version = json.version
+                        env.VERSION = version
+                        echo "Versión (frontend): ${version}"
+                    }
+                }
+            }
+        }
+
+        stage('Cargar imagen') {
+            steps {
+                script {
+                    def imageName = sh(script: "echo acajas-cr-namespace/${desarrollo}:${version}", returnStdout: true).trim()
+                    env.IMAGE_NAME = imageName
+                    echo "Image name: ${env.IMAGE_NAME}"
+                }
+            }
+        }
+
+        stage('Build de la imagen') {
+            steps {
+                script {
+                    sh 'docker --version'
+                }
+            }
+        }
+    }
+}
