@@ -57,7 +57,7 @@ pipeline {
             steps {
                 script {
                     dir('repo') {
-                        sh """docker build -t ${imageName} ."""
+                        sh """docker build -t ${env.IMAGE_NAME} ."""
                     }
                 }
             }
