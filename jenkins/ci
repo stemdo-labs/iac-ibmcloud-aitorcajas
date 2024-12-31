@@ -9,10 +9,41 @@ pipeline {
     parameters {
         string(name: 'desarrollo', defaultValue: 'develop-backend')
         string(name: 'entorno', defaultValue: 'develop')
-        string(name: 'version', defaultValue: '0')
+        string(name: 'repo', defaultValue: 'repo')
     }
 
     stages {
+        stage('Clonar otro repositorio') {
+            steps {
+                script {
+                    dir('repo') {
+                        git branch: 'develop', url: """https://github.com/stemdo-labs/${repo}"""
+                    }
+                }
+            }
+        }
+
+        stage('Extraer versión') {
+            steps {
+                script {
+                    dir('repo') {
+                        def repoName = env.REPO_NAME ?: sh(script: "echo ${env.GIT_URL} | awk -F'/' '{print \$NF}' | sed 's/.git\$//'", returnStdout: true).trim()
+                        echo "Nombre del repositorio: ${repoName}"
+                        if (repoName.contains('backend')) {
+                            def version = sh(script: "grep -o '<version>[^<]*' pom.xml | sed 's/<version>//' | sed -n '2p'", returnStdout: true).trim()
+                            env.VERSION = version
+                            echo "Versión (backend): ${version}"
+                        } else if (repoName.contains('frontend')) {
+                            def json = readJSON file: 'package.json'
+                            def version = json.version
+                            env.VERSION = version
+                            echo "Versión (frontend): ${version}"
+                        }
+                    }
+                }
+            }
+        }
+
         stage('Cargar imagen') {
             steps {
                 script {
@@ -23,10 +54,12 @@ pipeline {
             }
         }
 
-        stage('Build de la imagen') {
+        stage('Construir imagen Docker') {
             steps {
                 script {
-                    sh 'docker --version'
+                    dir('repo') {
+                        sh """docker build -t ${imageName} ."""
+                    }
                 }
             }
         }
