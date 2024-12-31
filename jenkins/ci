@@ -9,7 +9,7 @@ pipeline {
     parameters {
         string(name: 'desarrollo', defaultValue: 'develop-backend')
         string(name: 'entorno', defaultValue: 'develop')
-        string(name: 'repo', defaultValue: 'repo')
+        string(name: 'repo', defaultValue: 'reppppppo')
     }
 
     stages {
