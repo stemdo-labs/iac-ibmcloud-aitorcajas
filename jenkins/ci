@@ -28,13 +28,11 @@ pipeline {
                 script {
                     dir('repo') {
                         sh 'ls'
-                        def repoName = env.REPO_NAME ?: sh(script: "echo ${env.GIT_URL} | awk -F'/' '{print \$NF}' | sed 's/.git\$//'", returnStdout: true).trim()
-                        echo "Nombre del repositorio: ${repoName}"
-                        if (repoName.contains('backend')) {
+                        if (repo.contains('backend')) {
                             def version = sh(script: "grep -o '<version>[^<]*' pom.xml | sed 's/<version>//' | sed -n '2p'", returnStdout: true).trim()
                             env.VERSION = version
                             echo "Versión (backend): ${version}"
-                        } else if (repoName.contains('frontend')) {
+                        } else if (repo.contains('frontend')) {
                             def json = readJSON file: 'package.json'
                             def version = json.version
                             env.VERSION = version
