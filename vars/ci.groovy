@@ -7,6 +7,7 @@ def ci(String entorno, String desarrollo) {
                 } else if (desarrollo.contains('frontend')) {
                     git branch: 'develop', url: 'https://github.com/stemdo-labs/final-project-gestion-orquestas-frontend-aitorcajas.git'
                 }
+                sh 'ls'
             }
         }
 
