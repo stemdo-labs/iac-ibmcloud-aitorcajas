@@ -19,8 +19,8 @@ def ci(String entorno, String desarrollo) {
                     env.VERSION = version
                     echo "Versión (backend): ${version}"
                 } else if (repoName.contains('frontend')) {
-                    def version = sh(script: "jq -r '.version' package.json", returnStdout: true).trim()
-                    env.VERSION = version
+                    def json = readJSON file: 'package.json'
+                    def version = json.version
                     echo "Versión (frontend): ${version}"
                 }
             }
