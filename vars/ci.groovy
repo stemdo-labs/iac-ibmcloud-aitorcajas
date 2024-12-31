@@ -21,6 +21,7 @@ def ci(String entorno, String desarrollo) {
                 } else if (repoName.contains('frontend')) {
                     def json = readJSON file: 'package.json'
                     def version = json.version
+                    env.VERSION = version
                     echo "Versión (frontend): ${version}"
                 }
             }
@@ -28,9 +29,30 @@ def ci(String entorno, String desarrollo) {
 
         stage('Cargar imagen') {
             script {
-                def imageName = sh(script: "echo ${desarrollo}:${version}", returnStdout: true).trim()
+                def imageName = sh(script: "echo acajas-cr-namespace/${desarrollo}:${version}", returnStdout: true).trim()
                 env.IMAGE_NAME = imageName
                 echo "Image name: ${env.IMAGE_NAME}"
+            }
+        }
+
+        stage('Preparar Entorno') {
+            container('tools') {
+                sh '''
+                    apt-get update && apt-get install -y curl bash git docker.io
+                    curl -fsSL https://clis.cloud.ibm.com/install/linux | bash
+                    ibmcloud plugin install container-registry -r 'IBM Cloud'
+                    dockerd > /var/log/dockerd.log 2>&1 &
+                    sleep 10
+                    docker version
+                    ibmcloud --version
+                    ibmcloud plugin list
+                '''
+            }
+        }
+
+        stage('Build de la imagen') {
+            script {
+                sh 'docker build -t ${imageName} .'
             }
         }
     }
