@@ -1,12 +1,13 @@
 def ci(String entorno, String desarrollo) {
     node {
-        stage('Preparación') {
-            echo "Entorno: ${entorno}"
-            echo "Desarrollo: ${desarrollo}"
-        }
-
         stage('Checkout Code') {
-            checkout scm
+            script {
+                if(desarrollo.contains('backend')) {
+                    git branch: 'develop', url: 'https://github.com/stemdo-labs/final-project-gestion-orquestas-backend-aitorcajas.git'
+                } else if (desarrollo.contains('frontend')) {
+                    git branch: 'develop', url: 'https://github.com/stemdo-labs/final-project-gestion-orquestas-frontend-aitorcajas.git'
+                }
+            }
         }
 
         stage('Extraer versión') {
