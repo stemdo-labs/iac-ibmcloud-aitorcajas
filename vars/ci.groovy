@@ -1,9 +1,9 @@
 def ci() {
     node {
-        stage('Preparación') {
-            echo "Entorno: ${env.ENVIRONMENT}"
-            echo "Desarrollo: ${env.DEVELOPMENT}"
-        }
+        // stage('Preparación') {
+        //     echo "Entorno: ${env.ENVIRONMENT}"
+        //     echo "Desarrollo: ${env.DEVELOPMENT}"
+        // }
 
         stage('Checkout Code') {
             checkout scm
