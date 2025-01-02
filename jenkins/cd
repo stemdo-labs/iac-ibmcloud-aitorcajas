@@ -10,7 +10,9 @@ pipeline {
         stage('ls') {
             steps {
                 script {
-                    sh '''ls'''
+                    dir('repo') {
+                        sh '''ls'''
+                    }
                 }
             }
         }
