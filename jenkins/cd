@@ -42,7 +42,7 @@ pipeline {
             steps {
                 script {
                     sh """
-                    if ! oc get ns acajas > dev/null 2>1&; then
+                    if ! oc get ns acajas > /dev/null 2>1&; then
                         oc create ns acajas
                     fi // Define dinámicamente el valor de desarrollo
                     """
