@@ -56,6 +56,19 @@ pipeline {
             }
         }
 
+        stage('Modificar nginx.conf según el entorno') {
+            steps {
+                script {
+                    if (repo.contains('frontend')) {
+                        sh """
+                        sed "s/ENVIRONMENT/${entorno}/g" nginx.conf.template > nginx.conf
+                        cat nginx.conf
+                        """
+                    }
+                }
+            }
+        }
+
         stage('Construir imagen Docker') {
             steps {
                 script {
