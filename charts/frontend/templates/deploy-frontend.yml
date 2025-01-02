@@ -25,6 +25,6 @@ spec:
           requests:
             cpu: {{.Values.recursos.requests.cpu}}
             memory: {{.Values.recursos.requests.memoria}}
-      imagePullSecrets:
-      - name: acr-secret
+      # imagePullSecrets:
+      # - name: acr-secret
         
