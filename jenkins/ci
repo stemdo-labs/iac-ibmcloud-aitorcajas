@@ -59,11 +59,13 @@ pipeline {
         stage('Modificar nginx.conf según el entorno') {
             steps {
                 script {
-                    if (repo.contains('frontend')) {
-                        sh """
-                        sed "s/ENVIRONMENT/${entorno}/g" nginx.conf.template > nginx.conf
-                        cat nginx.conf
-                        """
+                    dir('repo') {
+                        if (repo.contains('frontend')) {
+                            sh """
+                            sed "s/ENVIRONMENT/${entorno}/g" nginx.conf.template > nginx.conf
+                            cat nginx.conf
+                            """
+                        }
                     }
                 }
             }
