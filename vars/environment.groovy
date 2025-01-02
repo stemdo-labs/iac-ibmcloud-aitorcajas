@@ -19,7 +19,8 @@ def environment() {
         stage('Extraer Desarrollo') {
             script {
                 def repoName = env.REPO_NAME ?: sh(script: "echo ${env.GIT_URL} | awk -F'/' '{print \$NF}' | sed 's/.git\$//'", returnStdout: true).trim()
-                echo "Nombre del repositorio: ${repoName}"
+                env.REPO = repoName
+                echo "Nombre del repositorio: ${env.REPO}"
                 if (repoName.contains("backend") && env.ENVIRONMENT == 'production') {
                     env.DEVELOPMENT = 'backend-production'
                 } else if (repoName.contains("backend") && env.ENVIRONMENT == 'development') {
