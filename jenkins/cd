@@ -1,0 +1,18 @@
+pipeline {
+    agent {
+      kubernetes {
+            label 'jenkins-jenkins-agent'
+            defaultContainer 'dind'
+        }
+    }
+
+    stages {
+        stage('ls') {
+            steps {
+                script {
+                    sh '''ls'''
+                }
+            }
+        }
+    }
+}
