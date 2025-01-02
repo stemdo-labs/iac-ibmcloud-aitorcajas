@@ -1,0 +1,37 @@
+// stage('Tests Backend') {
+        //     when {
+        //         expression {
+        //             return params.ENTORNO == 'production' && params.DESARROLLO.contains('backend')
+        //         }
+        //     }
+        //     environment {
+        //         SPRING_DB_HOST = credentials('PIP_VM_BD')
+        //         SPRING_DB_PORT = credentials('SPRING_DB_PORT')
+        //         SPRING_DB_NAME = credentials('SPRING_DB_NAME')
+        //         SPRING_DB_USER = credentials('SPRING_DB_USER')
+        //         SPRING_DB_PASSWORD = credentials('SPRING_DB_PASSWORD')
+        //     }
+        //     steps {
+        //         script {
+        //             sh 'curl -fsSL https://get.sdkman.io | bash' // Para instalar sdkman si es necesario
+        //             sh 'sdk install java 17.0.1-open'
+        //             sh 'mvn test'
+        //         }
+        //     }
+        // }
+
+        // stage('Tests Frontend') {
+        //     when {
+        //         expression {
+        //             return params.ENTORNO == 'production' && params.DESARROLLO.contains('frontend')
+        //         }
+        //     }
+        //     steps {
+        //         script {
+        //             sh 'curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -'
+        //             sh 'sudo apt-get install -y nodejs'
+        //             sh 'npm install'
+        //             sh 'npm run test:unit'
+        //         }
+        //     }
+        // }

@@ -1,0 +1,117 @@
+pipeline {
+    agent {
+      kubernetes {
+            label 'jenkins-jenkins-agent'
+            defaultContainer 'dind'
+        }
+    }
+
+    environment {
+        APIKEY_IBM_ACAJAS = credentials('APIKEY_IBM_ACAJAS')
+    }
+
+    parameters {
+        string(name: 'desarrollo', defaultValue: 'develop-backend')
+        string(name: 'entorno', defaultValue: 'develop')
+        string(name: 'repo', defaultValue: 'repositorio')
+    }
+
+    stages {
+        stage('Clonar otro repositorio') {
+            steps {
+                script {
+                    dir('repo') {
+                        git branch: 'develop', url: """https://github.com/stemdo-labs/${repo}"""
+                    }
+                }
+            }
+        }
+
+        stage('Extraer versión') {
+            steps {
+                script {
+                    dir('repo') {
+                        if (repo.contains('backend')) {
+                            def version = sh(script: "grep -o '<version>[^<]*' pom.xml | sed 's/<version>//' | sed -n '2p'", returnStdout: true).trim()
+                            env.VERSION = version
+                            echo "Versión (backend): ${version}"
+                        } else if (repo.contains('frontend')) {
+                            def json = readJSON file: 'package.json'
+                            def version = json.version
+                            env.VERSION = version
+                            echo "Versión (frontend): ${version}"
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Cargar imagen') {
+            steps {
+                script {
+                    def imageName = sh(script: "echo uk.icr.io/acajas-cr-namespace/${desarrollo}:${version}", returnStdout: true).trim()
+                    env.IMAGE_NAME = imageName
+                    echo "Image name: ${env.IMAGE_NAME}"
+                }
+            }
+        }
+
+        stage('Modificar nginx.conf según el entorno') {
+            steps {
+                script {
+                    dir('repo') {
+                        if (repo.contains('frontend')) {
+                            sh """
+                            sed "s/ENVIRONMENT/${entorno}/g" nginx.conf.template > nginx.conf
+                            cat nginx.conf
+                            """
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Construir imagen Docker') {
+            steps {
+                script {
+                    dir('repo') {
+                        sh """docker build -t ${env.IMAGE_NAME} ."""
+                    }
+                }
+            }
+        }
+
+        stage('Instalar IBM CLI') {
+            steps {
+                sh 'curl -fsSL https://clis.cloud.ibm.com/install/linux | sh'
+            }
+        }
+
+        stage('IBM Cloud Login') {
+            steps {
+                sh '''
+                    ibmcloud login --apikey ${APIKEY_IBM_ACAJAS} -r eu-gb
+                    ibmcloud target -g Stemdo_Sandbox
+                '''
+            }
+        }
+
+        stage('Instalar Plugin CR') {
+            steps {
+                sh 'ibmcloud plugin install container-registry'
+            }
+        }
+
+        stage('Login en IBM Container Registry') {
+            steps {
+                sh 'ibmcloud cr login --client docker'
+            }
+        }
+
+        stage('Push de la imagen') {
+            steps {
+                sh """docker push ${env.IMAGE_NAME}"""
+            }
+        }
+    }
+}

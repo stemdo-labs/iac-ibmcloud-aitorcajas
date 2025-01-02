@@ -9,6 +9,8 @@
 **/terraform.tfstate
 **/terraform.tfstate.*
 **/terraform.tfstate.lock.info
+**/terraform.tfvars
+**/.terraform.lock.hcl
 
 # Any plan files created during the execution of terraform plan -out=...
 **/terraform.tfplan

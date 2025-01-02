@@ -9,3 +9,15 @@ variable "rg_id" {
 variable "zone" {
   
 }
+
+variable "vpc_id" {
+  
+}
+
+variable "id_subnet" {
+  
+}
+
+variable "id_sg" {
+  
+}

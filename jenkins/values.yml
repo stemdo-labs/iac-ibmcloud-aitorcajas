@@ -1,2 +1,29 @@
 rbac:
   useOpenShiftNonRootSCC: true
+controller:
+  numExecutors: 7
+  route:
+    enabled: true
+ 
+agent:
+  additionalContainers:
+   - sideContainerName: dind
+     image:
+       repository: jooeel98/agente-jenkins
+       tag: 0.0.1
+     command: dockerd-entrypoint.sh
+     args: ""
+     privileged: true
+     resources:
+       requests:
+         cpu: 500m
+         memory: 1Gi
+       limits:
+         cpu: 1
+         memory: 2Gi
+
+# persistence:
+#   enabled: true
+#   existingClaim: jenkins-pvc
+#   storageClass: "jenkins"
+#   size: 20Gi
