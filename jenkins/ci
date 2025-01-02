@@ -6,10 +6,14 @@ pipeline {
         }
     }
 
+    environment {
+        APIKEY_IBM_ACAJAS = credentials('APIKEY_IBM_ACAJAS')
+    }
+
     parameters {
         string(name: 'desarrollo', defaultValue: 'develop-backend')
         string(name: 'entorno', defaultValue: 'develop')
-        string(name: 'repo', defaultValue: 'reppppppo')
+        string(name: 'repo', defaultValue: 'repositorio')
     }
 
     stages {
