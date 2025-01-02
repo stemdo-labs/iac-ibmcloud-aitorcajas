@@ -54,7 +54,7 @@
       become: yes
       become_user: root
       lineinfile:
-        path: "/etc/postgresql/16/main/postgresql.conf"  
+        path: "/etc/postgresql/12/main/postgresql.conf"  
         regexp: '^#?listen_addresses ='
         line: "listen_addresses = '*'"
         state: present
@@ -63,7 +63,7 @@
       become: yes
       become_user: root
       lineinfile:
-        path: "/etc/postgresql/16/main/pg_hba.conf"  
+        path: "/etc/postgresql/12/main/pg_hba.conf"  
         regexp: '^host\s+all\s+acajasbd\s+10.0.1.4/32\s+md5'
         line: "host    all             acajasbd        0.0.0.0/0               md5"
         state: present
