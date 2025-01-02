@@ -107,19 +107,19 @@ pipeline {
                     dir('repo/templates') {
                         if (desarrollo == "backend-development") {
                             sh """
-                            helm upgrade --install ${desarrollo} oci://uk.icr.io/acajas-cr-namespace/acajas/backend -f values-dev.yml -n ns-acajas
+                            helm upgrade --install ${desarrollo} oci://uk.icr.io/acajas-cr-namespace/acajas/backend -f values-dev.yml -n acajas
                             """
                         } else if (desarrollo == "backend-production") {
                             sh """
-                            helm upgrade --install ${desarrollo} oci://uk.icr.io/acajas-cr-namespace/acajas/backend -f values-prod.yml -n ns-acajas
+                            helm upgrade --install ${desarrollo} oci://uk.icr.io/acajas-cr-namespace/acajas/backend -f values-prod.yml -n acajas
                             """
                         } else if (desarrollo == "frontend-development") {
                             sh """
-                            helm upgrade --install ${desarrollo} oci://uk.icr.io/acajas-cr-namespace/acajas/frontend -f values-dev.yml -n ns-acajas
+                            helm upgrade --install ${desarrollo} oci://uk.icr.io/acajas-cr-namespace/acajas/frontend -f values-dev.yml -n acajas
                             """
                         } else if (desarrollo == "frontend-production") {
                             sh """
-                            helm upgrade --install ${desarrollo} oci://uk.icr.io/acajas-cr-namespace/acajas/frontend -f values-prod.yml -n ns-acajas
+                            helm upgrade --install ${desarrollo} oci://uk.icr.io/acajas-cr-namespace/acajas/frontend -f values-prod.yml -n acajas
                             """
                         }
                     }
