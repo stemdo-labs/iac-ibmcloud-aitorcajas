@@ -1,0 +1,63 @@
+pipeline {
+    agent {
+        kubernetes {
+            label 'jenkins-jenkins-agent'
+            defaultContainer 'jnlp'
+        }
+    }
+
+    environment {
+        ACAJAS_SSH_PRIVATE_KEY = credentials('ACAJAS_SSH_PRIVATE_KEY')
+        ACAJAS_VAULT_PASSWORD = credentials('ACAJAS_VAULT_PASSWORD')
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Instalar ansible') {
+            steps {
+                script {
+                    sh '''
+                    apt-get update
+                    apt-get install -y ansible
+                    apt-get install -y sshpass
+                    '''
+                }
+            }
+        }
+
+        stage('Configurar claves y generar inventario') {
+            steps {
+                script {
+                    dir('ansible') {
+                        sh '''
+                        mkdir -p ~/.ssh
+                        cp "${ACAJAS_SSH_PRIVATE_KEY}" ~/.ssh/id_rsa
+                        chmod 600 ~/.ssh/id_rsa
+                        ssh-keyscan -H 10.251.1.6 >> ~/.ssh/known_hosts
+                        echo "[bd]" > inventory.ini
+                        echo "10.251.1.6 ansible_user=root" >> inventory.ini
+                        '''
+                    }
+                }
+            }
+        }
+
+        stage('Ejecutar playbook') {
+            steps {
+                script {
+                    dir('ansible') {
+                        sh '''
+                        echo "$ACAJAS_VAULT_PASSWORD" > vault_password.txt
+                        ansible-playbook -i inventory.ini postgresql.yml --vault-password-file vault_password.txt
+                        '''
+                    }
+                }
+            }
+        }
+    }
+}
