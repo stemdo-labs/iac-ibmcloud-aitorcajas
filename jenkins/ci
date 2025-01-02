@@ -31,7 +31,6 @@ pipeline {
             steps {
                 script {
                     dir('repo') {
-                        sh 'ls'
                         if (repo.contains('backend')) {
                             def version = sh(script: "grep -o '<version>[^<]*' pom.xml | sed 's/<version>//' | sed -n '2p'", returnStdout: true).trim()
                             env.VERSION = version
