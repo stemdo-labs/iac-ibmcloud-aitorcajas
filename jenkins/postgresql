@@ -36,7 +36,7 @@ pipeline {
                     dir('ansible') {
                         sh '''
                         mkdir -p ~/.ssh
-                        cp "$ACAJAS_SSH_PRIVATE_KEY" ~/.ssh/id_rsa
+                        cp "${ACAJAS_SSH_PRIVATE_KEY}" ~/.ssh/id_rsa
                         chmod 600 ~/.ssh/id_rsa
                         ssh-keyscan -H 10.251.1.6 >> ~/.ssh/known_hosts
                         echo "[bd]" > inventory.ini
