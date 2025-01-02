@@ -50,7 +50,7 @@ pipeline {
         stage('Cargar imagen') {
             steps {
                 script {
-                    def imageName = sh(script: "echo acajas-cr-namespace/${desarrollo}:${version}", returnStdout: true).trim()
+                    def imageName = sh(script: "echo ${desarrollo}:${version}", returnStdout: true).trim()
                     env.IMAGE_NAME = imageName
                     echo "Image name: ${env.IMAGE_NAME}"
                 }
@@ -96,7 +96,7 @@ pipeline {
 
         stage('Push de la imagen') {
             steps {
-                sh """docker push oci://uk.icr.io/acajas-cr-namespace/${env.IMAGE_NAME}"""
+                sh """docker push uk.icr.io/acajas-cr-namespace/${env.IMAGE_NAME}"""
             }
         }
     }
