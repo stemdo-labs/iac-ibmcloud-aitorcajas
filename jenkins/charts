@@ -8,6 +8,7 @@ pipeline {
 
     environment {
         APIKEY_IBM_ACAJAS = credentials('APIKEY_IBM_ACAJAS')
+        PUSH = credentials('push')
     }
     
     stages {
@@ -92,7 +93,7 @@ pipeline {
         stage('IBM Cloud Login') {
             steps {
                 sh '''
-                    ibmcloud login --apikey ${APIKEY_IBM_ACAJAS} -r eu-gb
+                    ibmcloud login --apikey ${PUSH} -r eu-gb
                     ibmcloud target -g Stemdo_Sandbox
                 '''
             }
