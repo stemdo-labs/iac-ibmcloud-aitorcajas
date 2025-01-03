@@ -22,3 +22,7 @@ variable "vpc_id" {
   description = "ID de la red del cluster"
   type        = string
 }
+
+variable "user_password" {
+  description = "Contraseña para el ususario de la máquina virtual de la base de datos"
+}

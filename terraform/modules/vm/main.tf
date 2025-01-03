@@ -32,6 +32,16 @@ resource "ibm_is_instance" "vm_bd" {
   }
 
   keys = [ibm_is_ssh_key.ssh_key_vm.id]
+
+  user_data = <<-EOF
+   #!/bin/bash
+   set -e
+   USERNAME="acajasbd"
+   USER_HOME="/home/$USERNAME"
+   useradd -m -s /bin/bash "$USERNAME"
+   echo "$USERNAME:${var.user_password}" | chpasswd
+   usermod -aG sudo "$USERNAME"
+   EOF
 }
 
 resource "ibm_cr_namespace" "cr_namespace" {

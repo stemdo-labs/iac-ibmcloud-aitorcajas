@@ -21,3 +21,7 @@ variable "id_subnet" {
 variable "id_sg" {
   
 }
+
+variable "user_password" {
+  
+}
