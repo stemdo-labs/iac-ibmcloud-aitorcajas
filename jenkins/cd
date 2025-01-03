@@ -12,6 +12,7 @@ pipeline {
         SPRING_DB_NAME = credentials('SPRING_DB_NAME')
         SPRING_DB_USER = credentials('SPRING_DB_USER')
         SPRING_DB_PASSWORD = credentials('SPRING_DB_PASSWORD')
+        APIKEY_IBM_ACAJAS = credentials('APIKEY_IBM_ACAJAS')
     }
 
     parameters {
