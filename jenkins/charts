@@ -110,7 +110,7 @@ pipeline {
             steps {
                 sh '''
                 ibmcloud cr region-set eu-gb
-                ibmcloud cr login --client docker
+                ibmcloud cr login
                 '''
             }
         }
