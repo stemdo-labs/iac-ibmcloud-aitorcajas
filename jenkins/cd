@@ -42,9 +42,9 @@ pipeline {
             steps {
                 script {
                     sh """
-                    if ! oc get ns acajas > /dev/null 2>1&; then
+                    if ! oc get ns acajas > /dev/null 2>&1; then
                         oc create ns acajas
-                    fi // Define dinámicamente el valor de desarrollo
+                    fi
                     """
                 }
             }
@@ -55,7 +55,7 @@ pipeline {
                 script {
                     def desarrollo = 'backend'
                     if (desarrollo.contains("backend")) {
-                        sh '''
+                        sh """
                         if ! oc get secrets secretos-backend -n acajas > /dev/null 2>&1; then
                           oc create secret generic secretos-backend \
                             --from-literal=SPRING_DB_HOST=10.251.1.6 \
@@ -65,7 +65,7 @@ pipeline {
                             --from-literal=SPRING_DB_PASSWORD=${SPRING_DB_PASSWORD} \
                             -n acajas
                         fi
-                        '''
+                        """
                     } else {
                         echo "No es un entorno backend, no se crea el secreto."
                     }
