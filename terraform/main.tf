@@ -28,6 +28,7 @@ module "vm" {
   vpc_id    = var.vpc_id
   id_subnet = module.networks.id_subnet
   id_sg     = module.networks.id_sg
+  user_password = var.user_password
 }
 
 # module "cluster" {
