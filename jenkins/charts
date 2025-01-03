@@ -92,7 +92,7 @@ pipeline {
         stage('IBM Cloud Login') {
             steps {
                 sh '''
-                    ibmcloud login --apikey ${APIKEY_IBM_ACAJAS} -r eu-gb
+                    ibmcloud login --apikey ${APIKEY_IBM_ACAJAS} -r eu-es
                     ibmcloud target -g Stemdo_Sandbox
                 '''
             }
@@ -106,7 +106,11 @@ pipeline {
 
         stage('Login en IBM Container Registry') {
             steps {
-                sh 'ibmcloud cr login --client docker'
+                sh '''
+                ibmcloud cr region-set global
+                ibmcloud cr namespace-add acajas-cr
+                ibmcloud cr login --client docker
+                '''
             }
         }
 
@@ -114,8 +118,8 @@ pipeline {
             steps {
                 dir('charts') {
                     sh '''
-                        helm push backend-${BACK_VERSION}.tgz oci://uk.icr.io/acajas-cr-namespace/acajas
-                        helm push frontend-${FRONT_VERSION}.tgz oci://uk.icr.io/acajas-cr-namespace/acajas
+                        helm push backend-${BACK_VERSION}.tgz oci://uk.icr.io/acajas-cr/acajas
+                        helm push frontend-${FRONT_VERSION}.tgz oci://uk.icr.io/acajas-cr/acajas
                     '''
                 }
             }

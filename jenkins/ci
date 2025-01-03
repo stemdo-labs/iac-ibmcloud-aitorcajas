@@ -49,7 +49,7 @@ pipeline {
         stage('Cargar imagen') {
             steps {
                 script {
-                    def imageName = sh(script: "echo uk.icr.io/acajas-cr-namespace/${desarrollo}:${version}", returnStdout: true).trim()
+                    def imageName = sh(script: "echo uk.icr.io/acajas-cr/${desarrollo}:${version}", returnStdout: true).trim()
                     env.IMAGE_NAME = imageName
                     echo "Image name: ${env.IMAGE_NAME}"
                 }
@@ -90,7 +90,7 @@ pipeline {
         stage('IBM Cloud Login') {
             steps {
                 sh '''
-                    ibmcloud login --apikey ${APIKEY_IBM_ACAJAS} -r eu-gb
+                    ibmcloud login --apikey ${APIKEY_IBM_ACAJAS} -r eu-es
                     ibmcloud target -g Stemdo_Sandbox
                 '''
             }
@@ -105,6 +105,8 @@ pipeline {
         stage('Login en IBM Container Registry') {
             steps {
                 sh '''
+                ibmcloud cr region-set global
+                ibmcloud cr namespace-add acajas-cr
                 ibmcloud cr login --client docker
                 '''
             }
