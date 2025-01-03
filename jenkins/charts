@@ -94,7 +94,7 @@ pipeline {
         stage('IBM Cloud Login') {
             steps {
                 sh '''
-                    ibmcloud login --apikey ${DAVID_API_KEY} -r global
+                    ibmcloud login --apikey ${DAVID_API_KEY} -r eu-gb
                     ibmcloud target -g Stemdo_Sandbox
                 '''
             }
@@ -109,6 +109,7 @@ pipeline {
         stage('Login en IBM Container Registry') {
             steps {
                 sh '''
+                ibmcloud cr region-set eu-gb
                 ibmcloud cr login --client docker
                 '''
             }
