@@ -8,6 +8,7 @@ pipeline {
 
     environment {
         APIKEY_IBM_ACAJAS = credentials('APIKEY_IBM_ACAJAS')
+        DAVID_API_KEY = credentials('DAVID_API_KEY')
     }
 
     parameters {
@@ -49,7 +50,7 @@ pipeline {
         stage('Cargar imagen') {
             steps {
                 script {
-                    def imageName = sh(script: "echo uk.icr.io/acajas-cr/${desarrollo}:${version}", returnStdout: true).trim()
+                    def imageName = sh(script: "echo icr.io/acajas-cr/${desarrollo}:${version}", returnStdout: true).trim()
                     env.IMAGE_NAME = imageName
                     echo "Image name: ${env.IMAGE_NAME}"
                 }
@@ -90,7 +91,7 @@ pipeline {
         stage('IBM Cloud Login') {
             steps {
                 sh '''
-                    ibmcloud login --apikey ${APIKEY_IBM_ACAJAS} -r eu-es
+                    ibmcloud login --apikey ${APIKEY_IBM_ACAJAS} -r eu-gb
                     ibmcloud target -g Stemdo_Sandbox
                 '''
             }
@@ -106,8 +107,7 @@ pipeline {
             steps {
                 sh '''
                 ibmcloud cr region-set global
-                ibmcloud cr namespace-add acajas-cr
-                ibmcloud cr login --client docker
+                ibmcloud cr login
                 '''
             }
         }

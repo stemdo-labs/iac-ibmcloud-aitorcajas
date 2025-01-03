@@ -1,10 +1,10 @@
 rbac:
+  readSecrets: true
   useOpenShiftNonRootSCC: true
 controller:
   numExecutors: 7
   route:
     enabled: true
- 
 agent:
   additionalContainers:
    - sideContainerName: dind
