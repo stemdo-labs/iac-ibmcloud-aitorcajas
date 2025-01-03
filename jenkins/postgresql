@@ -18,12 +18,23 @@ pipeline {
             }
         }
 
-        stage('Instalar ansible') {
+        // stage('Instalar ansible') {
+        //     steps {
+        //         script {
+        //             sh '''
+        //             apt-get update
+        //             apt-get install -y ansible
+        //             apt-get install -y sshpass
+        //             '''
+        //         }
+        //     }
+        // }
+
+        stage('Instalar sshpass') {
             steps {
                 script {
                     sh '''
                     apt-get update
-                    apt-get install -y ansible
                     apt-get install -y sshpass
                     '''
                 }

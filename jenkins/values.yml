@@ -10,7 +10,7 @@ agent:
    - sideContainerName: dind
      image:
        repository: jooeel98/agente-jenkins
-       tag: 0.0.1
+       tag: 0.2.1
      command: dockerd-entrypoint.sh
      args: ""
      privileged: true
