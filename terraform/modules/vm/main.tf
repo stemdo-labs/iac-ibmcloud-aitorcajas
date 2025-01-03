@@ -33,3 +33,8 @@ resource "ibm_is_instance" "vm_bd" {
 
   keys = [ibm_is_ssh_key.ssh_key_vm.id]
 }
+
+resource "ibm_cr_namespace" "cr_namespace" {
+  name              = "acajas-cr"
+  resource_group_id = var.rg_id
+}
