@@ -51,6 +51,22 @@ pipeline {
             }
         }
 
+        stage('Crear secreto para las credenciales') {
+            steps {
+                script {
+                    sh """
+                    if ! oc get secret ibmcloud-registry-secret -n acajas > /dev/null 2>&1; then
+                        oc create secret docker-registry ibmcloud-registry-secret \
+                        --docker-server=icr.io \
+                        --docker-username=iamapikey \
+                        --docker-password=${APIKEY_IBM_ACAJAS} \
+                        -n acajas
+                    fi
+                    """
+                }
+            }
+        }
+
         stage('Crear secreto para conexión con base de datos') {
             steps {
                 script {
