@@ -119,8 +119,8 @@ pipeline {
             steps {
                 dir('charts') {
                     sh '''
-                        helm push backend-${BACK_VERSION}.tgz oci://icr.io/acajas-cr/acajas
-                        helm push frontend-${FRONT_VERSION}.tgz oci://icr.io/acajas-cr/acajas
+                        helm push backend-${BACK_VERSION}.tgz oci://uk.icr.io/acajas-cr/acajas
+                        helm push frontend-${FRONT_VERSION}.tgz oci://uk.icr.io/acajas-cr/acajas
                     '''
                 }
             }
